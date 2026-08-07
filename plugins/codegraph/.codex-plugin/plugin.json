@@ -1,0 +1,25 @@
+{
+  "name": "codegraph",
+  "version": "0.1.0",
+  "description": "Local adapter for exploring indexed repositories with the external CodeGraph CLI.",
+  "author": {
+    "name": "Agent Forge"
+  },
+  "homepage": "https://colbymchenry.github.io/codegraph/",
+  "repository": "https://github.com/colbymchenry/codegraph",
+  "license": "MIT",
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "CodeGraph",
+    "shortDescription": "Explore indexed repositories with CodeGraph.",
+    "longDescription": "Registers the external CodeGraph CLI as a local MCP server and guides indexed repository exploration.",
+    "developerName": "Agent Forge",
+    "category": "Developer Tools",
+    "capabilities": [
+      "Indexed code search",
+      "Dependency analysis"
+    ],
+    "defaultPrompt": "Explore this indexed repository with CodeGraph."
+  },
+  "mcpServers": "./.mcp.json"
+}

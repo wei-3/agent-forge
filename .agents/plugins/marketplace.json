@@ -1,0 +1,198 @@
+{
+  "name": "agent-forge",
+  "interface": {
+    "displayName": "Agent Forge"
+  },
+  "plugins": [
+    {
+      "name": "mattpocock-skills",
+      "description": "Engineering workflow skills for planning, TDD, debugging, domain modeling, and code review.",
+      "source": {
+        "source": "url",
+        "url": "https://github.com/mattpocock/skills.git",
+        "sha": "ed37663cc5fbef691ddfecd080dff42f7e7e350d"
+      },
+      "author": {
+        "name": "Matt Pocock"
+      },
+      "repository": "https://github.com/mattpocock/skills",
+      "homepage": "https://www.aihero.dev",
+      "license": "MIT",
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Developer Tools"
+    },
+    {
+      "name": "obsidian",
+      "description": "Skills for Obsidian Markdown, Bases, Canvas, CLI workflows, and web-content extraction.",
+      "source": {
+        "source": "url",
+        "url": "https://github.com/kepano/obsidian-skills.git",
+        "sha": "a1dc48e68138490d522c04cbf5822214c6eb1202"
+      },
+      "author": {
+        "name": "Steph Ango"
+      },
+      "repository": "https://github.com/kepano/obsidian-skills",
+      "homepage": "https://github.com/kepano/obsidian-skills",
+      "license": "MIT",
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Productivity"
+    },
+    {
+      "name": "twg",
+      "description": "Atlassian Teamwork Graph skills; requires the separately installed TWG CLI and login.",
+      "source": {
+        "source": "url",
+        "url": "https://github.com/atlassian/twg-cli.git",
+        "sha": "bbc5ac76bbef7d9b16bfeb9a60c6135ff0d890a9"
+      },
+      "author": {
+        "name": "Atlassian"
+      },
+      "repository": "https://github.com/atlassian/twg-cli",
+      "homepage": "https://atlassian.github.io/twg-cli/",
+      "skills": "./skills/",
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Productivity"
+    },
+    {
+      "name": "context7",
+      "description": "Up-to-date, version-aware library documentation through the native Context7 MCP plugin.",
+      "source": {
+        "source": "git-subdir",
+        "url": "https://github.com/upstash/context7.git",
+        "path": "./plugins/codex/context7",
+        "sha": "305dd3ca10341fd0190825417bbd7a0c861490c9"
+      },
+      "author": {
+        "name": "Upstash"
+      },
+      "repository": "https://github.com/upstash/context7",
+      "homepage": "https://context7.com",
+      "license": "MIT",
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_USE"
+      },
+      "category": "Developer Tools"
+    },
+    {
+      "name": "superpowers",
+      "description": "Software-development workflows for planning, TDD, debugging, parallel execution, and review.",
+      "source": {
+        "source": "url",
+        "url": "https://github.com/obra/superpowers.git",
+        "sha": "3dcbd5c4b48e02263fbf4a3c01e3fe4f81d584d9"
+      },
+      "author": {
+        "name": "Jesse Vincent"
+      },
+      "repository": "https://github.com/obra/superpowers",
+      "homepage": "https://github.com/obra/superpowers",
+      "license": "MIT",
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Developer Tools"
+    },
+    {
+      "name": "postman",
+      "description": "Seven Postman API workflow skills plus the Full Postman MCP server.",
+      "source": {
+        "source": "git-subdir",
+        "url": "https://github.com/Postman-Devrel/postman-claude-code-plugin.git",
+        "path": "./skills",
+        "sha": "b7b3c7a83486ee088844a96278411690523d389f"
+      },
+      "author": {
+        "name": "Postman"
+      },
+      "repository": "https://github.com/Postman-Devrel/postman-claude-code-plugin",
+      "homepage": "https://learning.postman.com/docs/developer/postman-mcp-server/",
+      "license": "Apache-2.0",
+      "skills": [
+        "./agent-ready-apis",
+        "./generate-spec",
+        "./postman-cli",
+        "./postman-context",
+        "./postman-knowledge",
+        "./run-collection",
+        "./send-request"
+      ],
+      "mcpServers": {
+        "postman": {
+          "type": "http",
+          "url": "https://mcp.postman.com/mcp"
+        }
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Developer Tools"
+    },
+    {
+      "name": "ponytail",
+      "description": "Minimalist software-development workflows that favor YAGNI and the smallest correct implementation.",
+      "source": {
+        "source": "url",
+        "url": "https://github.com/DietrichGebert/ponytail.git",
+        "sha": "16f29800fd2681bdf24f3eb4ccffe38be3baec6b"
+      },
+      "author": {
+        "name": "Dietrich Gebert"
+      },
+      "repository": "https://github.com/DietrichGebert/ponytail",
+      "homepage": "https://github.com/DietrichGebert/ponytail",
+      "license": "MIT",
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Productivity"
+    },
+    {
+      "name": "codegraph",
+      "source": {
+        "source": "local",
+        "path": "./plugins/codegraph"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Developer Tools"
+    },
+    {
+      "name": "lark",
+      "description": "Lark and Feishu workflow skills; requires the separately installed Lark CLI and login.",
+      "source": {
+        "source": "url",
+        "url": "https://github.com/larksuite/cli.git",
+        "sha": "a7865cd0a7416655535517a2a630848fde318761"
+      },
+      "author": {
+        "name": "LarkSuite"
+      },
+      "repository": "https://github.com/larksuite/cli",
+      "homepage": "https://github.com/larksuite/cli",
+      "license": "MIT",
+      "skills": "./skills/",
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Productivity"
+    }
+  ]
+}

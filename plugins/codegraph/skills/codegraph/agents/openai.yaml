@@ -1,0 +1,4 @@
+interface:
+  display_name: "CodeGraph"
+  short_description: "Explore indexed repositories with CodeGraph"
+  default_prompt: "Use $codegraph to explore this repository's indexed code graph."
