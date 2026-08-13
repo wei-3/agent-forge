@@ -560,7 +560,8 @@ test('marketplace plugins satisfy the repository contract', () => {
   );
   assert.match(readme, /codex plugin marketplace add wei-3\/agent-forge/u);
   assert.match(readme, /^## 本地开发$/mu);
-  assert.match(readme, /\| 插件 \| 何时用 \| 来源 \|/u);
+  assert.match(readme, /^\| 插件 \| 何时用 \|$/mu);
+  assert.doesNotMatch(readme, /^\| 插件 \| 何时用 \| 来源 \|$/mu);
   assert.doesNotMatch(readme, /\| 插件 \| 接入方式 \| 额外要求 \|/u);
   assert.doesNotMatch(readme, /^## 已有环境切换到 Agent Forge$/mu);
   for (const name of names) {
