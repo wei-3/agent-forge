@@ -7,7 +7,6 @@
   },
   "homepage": "https://colbymchenry.github.io/codegraph/",
   "repository": "https://github.com/colbymchenry/codegraph",
-  "license": "MIT",
   "skills": "./skills/",
   "interface": {
     "displayName": "CodeGraph",

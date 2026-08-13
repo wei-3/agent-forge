@@ -8,7 +8,6 @@ const REPO_ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const MARKETPLACE_PATH = join(REPO_ROOT, '.agents/plugins/marketplace.json');
 const README_PATH = join(REPO_ROOT, 'README.md');
 const SLUG = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
-const GIT_SHA = /^[0-9a-f]{40}$/;
 const HTTPS_GIT_URL = /^https:\/\/github\.com\/[^/]+\/[^/]+\.git$/;
 const SEMVER =
   /^(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)(?:-(?:0|[1-9]\d*|\d*[A-Za-z-][0-9A-Za-z-]*)(?:\.(?:0|[1-9]\d*|\d*[A-Za-z-][0-9A-Za-z-]*))*)?(?:\+[0-9A-Za-z-]+(?:\.[0-9A-Za-z-]+)*)?$/;
@@ -39,7 +38,6 @@ const THIRD_PARTY_PLUGINS = {
     source: {
       source: 'url',
       url: 'https://github.com/mattpocock/skills.git',
-      sha: 'ed37663cc5fbef691ddfecd080dff42f7e7e350d',
     },
     authentication: 'ON_INSTALL',
     category: 'Developer Tools',
@@ -48,7 +46,6 @@ const THIRD_PARTY_PLUGINS = {
     source: {
       source: 'url',
       url: 'https://github.com/kepano/obsidian-skills.git',
-      sha: 'a1dc48e68138490d522c04cbf5822214c6eb1202',
     },
     authentication: 'ON_INSTALL',
     category: 'Productivity',
@@ -57,7 +54,6 @@ const THIRD_PARTY_PLUGINS = {
     source: {
       source: 'url',
       url: 'https://github.com/atlassian/twg-cli.git',
-      sha: 'bbc5ac76bbef7d9b16bfeb9a60c6135ff0d890a9',
     },
     authentication: 'ON_INSTALL',
     category: 'Productivity',
@@ -67,7 +63,6 @@ const THIRD_PARTY_PLUGINS = {
       source: 'git-subdir',
       url: 'https://github.com/upstash/context7.git',
       path: './plugins/codex/context7',
-      sha: '305dd3ca10341fd0190825417bbd7a0c861490c9',
     },
     authentication: 'ON_USE',
     category: 'Developer Tools',
@@ -76,7 +71,6 @@ const THIRD_PARTY_PLUGINS = {
     source: {
       source: 'url',
       url: 'https://github.com/obra/superpowers.git',
-      sha: '3dcbd5c4b48e02263fbf4a3c01e3fe4f81d584d9',
     },
     authentication: 'ON_INSTALL',
     category: 'Developer Tools',
@@ -86,7 +80,6 @@ const THIRD_PARTY_PLUGINS = {
       source: 'git-subdir',
       url: 'https://github.com/Postman-Devrel/postman-claude-code-plugin.git',
       path: './skills',
-      sha: 'b7b3c7a83486ee088844a96278411690523d389f',
     },
     authentication: 'ON_INSTALL',
     category: 'Developer Tools',
@@ -95,7 +88,6 @@ const THIRD_PARTY_PLUGINS = {
     source: {
       source: 'url',
       url: 'https://github.com/DietrichGebert/ponytail.git',
-      sha: '16f29800fd2681bdf24f3eb4ccffe38be3baec6b',
     },
     authentication: 'ON_INSTALL',
     category: 'Productivity',
@@ -104,7 +96,6 @@ const THIRD_PARTY_PLUGINS = {
     source: {
       source: 'url',
       url: 'https://github.com/larksuite/cli.git',
-      sha: 'a7865cd0a7416655535517a2a630848fde318761',
     },
     authentication: 'ON_INSTALL',
     category: 'Productivity',
@@ -465,8 +456,11 @@ test('marketplace plugins satisfy the repository contract', () => {
         APPROVED_REMOTE_URLS.has(plugin.source.url),
         `${plugin.name} source URL is not approved`,
       );
-      assert.ok(isNonEmptyString(plugin.source.sha), `${plugin.name} source SHA is required`);
-      assert.match(plugin.source.sha, GIT_SHA, `${plugin.name} must pin a full commit SHA`);
+      assert.equal(
+        plugin.source.sha,
+        undefined,
+        `${plugin.name} must follow the upstream default branch`,
+      );
       assert.ok(isNonEmptyString(plugin.description), `${plugin.name} description is required`);
       assert.ok(isNonEmptyString(plugin.author?.name), `${plugin.name} author.name is required`);
       assert.ok(isNonEmptyString(plugin.repository), `${plugin.name} repository is required`);
@@ -560,15 +554,52 @@ test('marketplace plugins satisfy the repository contract', () => {
   });
 
   const readme = readFileSync(README_PATH, 'utf8');
+  assert.ok(
+    readme.indexOf('## 安装') < readme.indexOf('## 插件清单'),
+    'README installation must appear before the plugin list',
+  );
+  assert.match(readme, /codex plugin marketplace add wei-3\/agent-forge/u);
+  assert.match(readme, /^## 本地开发$/mu);
+  assert.match(readme, /\| 插件 \| 何时用 \| 来源 \|/u);
+  assert.doesNotMatch(readme, /\| 插件 \| 接入方式 \| 额外要求 \|/u);
+  assert.doesNotMatch(readme, /^## 已有环境切换到 Agent Forge$/mu);
   for (const name of names) {
+    const plugin = pluginsByName.get(name);
     const guidePath = join(REPO_ROOT, 'docs/plugins', `${name}.md`);
     assert.ok(existsSync(guidePath), `${name} is missing its Chinese plugin guide`);
-    assert.match(readFileSync(guidePath, 'utf8'), /[\u3400-\u9fff]/u, `${name} guide must be Chinese`);
+    const guide = readFileSync(guidePath, 'utf8');
+    assert.match(guide, /[\u3400-\u9fff]/u, `${name} guide must be Chinese`);
+    const repository = plugin.source?.source === 'local'
+      ? readJson(join(REPO_ROOT, plugin.source.path, '.codex-plugin/plugin.json')).repository
+      : plugin.repository;
+    assert.ok(
+      isNonEmptyString(repository) && guide.includes(repository),
+      `${name} guide must link its upstream repository`,
+    );
+    if (plugin.source?.source !== 'local') {
+      assert.match(
+        guide,
+        /插件源码不固定 SHA；重新安装时从上游默认分支取得最新提交。/u,
+        `${name} guide must explain the unpinned update policy`,
+      );
+    }
     assert.ok(
       readme.includes(`[\`${name}\`](docs/plugins/${name}.md)`),
       `${name} is missing its README guide link`,
     );
+    assert.ok(
+      readme.includes(`codex plugin add ${name}@agent-forge`),
+      `${name} is missing from the full installation block`,
+    );
   }
+  assert.doesNotMatch(
+    readFileSync(join(REPO_ROOT, 'docs/plugins/lark.md'), 'utf8'),
+    /固定提交|市场固定的 v|市场 SHA/u,
+  );
+  const codegraphGuide = readFileSync(join(REPO_ROOT, 'docs/plugins/codegraph.md'), 'utf8');
+  assert.match(codegraphGuide, /npm install -g @colbymchenry\/codegraph(?:\s|$)/u);
+  assert.match(codegraphGuide, /codegraph upgrade(?:\s|$)/u);
+  assert.doesNotMatch(codegraphGuide, /@colbymchenry\/codegraph@|codegraph upgrade \d/u);
 });
 
 test('local plugin skills satisfy the repository metadata contract', () => {

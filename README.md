@@ -1,37 +1,46 @@
 # Agent Forge
 
-一个以 Codex 为第一支持目标的插件市场。自研插件使用本地目录，第三方插件均固定到已审核的上游 commit SHA，以保证安装来源可复现。
+一个以 Codex 为第一支持目标的插件市场。自研插件使用本地目录；第三方插件通过外链接入，不固定 commit SHA，重新安装时跟随上游默认分支最新版本。
 
-## 本地使用
+## 安装
 
-在仓库根目录执行：
-
-```bash
-codex plugin marketplace add .
-codex plugin list
-```
-
-使用市场名安装插件：
+添加市场并安装需要的插件：
 
 ```bash
-codex plugin add <plugin-name>@agent-forge
+codex plugin marketplace add wei-3/agent-forge
+codex plugin add <插件名>@agent-forge
 ```
 
-当前提供：
+将 `<插件名>` 替换为下方清单中的名称。安装后新建一个 Codex 任务，让新任务加载插件。
 
-| 插件 | 接入方式 | 额外要求 |
+全部装齐：
+
+```bash
+codex plugin marketplace add wei-3/agent-forge
+codex plugin add mattpocock-skills@agent-forge
+codex plugin add obsidian@agent-forge
+codex plugin add twg@agent-forge
+codex plugin add context7@agent-forge
+codex plugin add superpowers@agent-forge
+codex plugin add postman@agent-forge
+codex plugin add ponytail@agent-forge
+codex plugin add codegraph@agent-forge
+codex plugin add lark@agent-forge
+```
+
+## 插件清单
+
+| 插件 | 何时用 | 来源 |
 | --- | --- | --- |
-| [`mattpocock-skills`](docs/plugins/mattpocock-skills.md) | 兼容模式 | 每个项目首次运行 setup Skill |
-| [`obsidian`](docs/plugins/obsidian.md) | 兼容模式 | 部分 Skills 可选 Obsidian CLI 或 Defuddle |
-| [`twg`](docs/plugins/twg.md) | 兼容模式 | 单独安装 TWG CLI 并登录 |
-| [`context7`](docs/plugins/context7.md) | 原生 Codex MCP 插件 | 首次使用时 OAuth |
-| [`superpowers`](docs/plugins/superpowers.md) | 原生 Codex 插件 | 无 |
-| [`postman`](docs/plugins/postman.md) | 兼容模式：7 个 Skills + Full MCP | MCP 使用 OAuth；部分 Skills 需要 Postman CLI |
-| [`ponytail`](docs/plugins/ponytail.md) | 原生 Codex 插件 | hooks 需要 Node.js，并在 `/hooks` 中审核信任 |
-| [`codegraph`](docs/plugins/codegraph.md) | 本地 MCP 适配插件 | 单独安装 CodeGraph CLI；每个项目运行一次 `codegraph init` |
-| [`lark`](docs/plugins/lark.md) | 兼容模式 | 单独安装 Lark CLI、配置应用并登录 |
-
-兼容模式表示上游没有 `.codex-plugin/plugin.json`，由市场条目声明需要加载的内容。
+| [`mattpocock-skills`](docs/plugins/mattpocock-skills.md) | 想按规划、TDD、调试、领域建模和代码评审等工程纪律推进开发时 | [第三方外链](https://github.com/mattpocock/skills) |
+| [`obsidian`](docs/plugins/obsidian.md) | 编辑 Obsidian Markdown、Bases、Canvas，或抽取网页正文时 | [第三方外链](https://github.com/kepano/obsidian-skills) |
+| [`twg`](docs/plugins/twg.md) | 查询或操作 Jira、Confluence 等 Atlassian 工作数据时 | [第三方外链](https://github.com/atlassian/twg-cli) |
+| [`context7`](docs/plugins/context7.md) | 查询版本相关的最新库文档和代码示例时 | [第三方外链](https://github.com/upstash/context7) |
+| [`superpowers`](docs/plugins/superpowers.md) | 用头脑风暴、TDD、系统化调试、计划和评审流程推进开发时 | [第三方外链](https://github.com/obra/superpowers) |
+| [`postman`](docs/plugins/postman.md) | 发现、调用、测试 API，或管理 Postman 工作流时 | [第三方外链](https://github.com/Postman-Devrel/postman-claude-code-plugin) |
+| [`ponytail`](docs/plugins/ponytail.md) | 寻找最小实现，或审查代码中的过度工程时 | [第三方外链](https://github.com/DietrichGebert/ponytail) |
+| [`codegraph`](docs/plugins/codegraph.md) | 索引并探索跨仓库代码关系、引用和调用链时 | [第三方能力，本地适配](https://github.com/colbymchenry/codegraph) |
+| [`lark`](docs/plugins/lark.md) | 操作飞书文档、消息、日历、多维表格、邮箱、任务和会议时 | [第三方外链](https://github.com/larksuite/cli) |
 
 ## 外部依赖
 
@@ -41,7 +50,7 @@ Codex 安装插件时不会安装系统级 CLI。每个插件的独立中文指�
 
 ## 更新已安装插件
 
-如果 `agent-forge` 通过 Git 来源添加，先刷新市场快照，再重新安装插件：
+如果 `agent-forge` 通过 Git 来源添加，先刷新市场快照，再重新安装插件。第三方插件会在重新安装时取得上游默认分支的最新提交：
 
 ```bash
 codex plugin marketplace upgrade agent-forge
@@ -56,32 +65,16 @@ codex plugin add <plugin-name>@agent-forge
 
 更新后新建一个 Codex 任务，让新任务加载更新后的 Skills、MCP 和 hooks。
 
-## 已有环境切换到 Agent Forge
+第三方上游更新不会自动进入已经安装的插件缓存。外链不固定 SHA 的代价是安装结果不可复现；上游推送、删除文件或调整目录都可能直接影响下一次安装。
 
-全新环境可以跳过本节。只有已经从其他来源安装过同名插件，或者手动注册过 Skills、MCP 时才需要清理。
+## 本地开发
 
-先查看当前插件来源：
-
-```bash
-codex plugin list
-```
-
-卸载原来的同名插件，再从 Agent Forge 安装：
+在仓库根目录添加本地市场：
 
 ```bash
-codex plugin remove <plugin-name>@<原市场名>
-codex plugin add <plugin-name>@agent-forge
+codex plugin marketplace add .
+codex plugin add <插件名>@agent-forge
 ```
-
-外部 CLI 与市场插件相互独立。切换市场时通常不需要卸载 `lark-cli`、`twg`、`postman` 或 `codegraph` CLI。
-
-只有执行过下列手动安装时，才需要额外清理：
-
-- 运行过 `npx skills add ...`：清理对应的全局 Skills。
-- 运行过 `codex mcp add ...`：移除旧的手动 MCP 注册。
-- 运行过 `codegraph install`：执行 `codegraph uninstall --target codex --keep-cli`，只移除旧 Codex 集成并保留 CLI；不要执行 `codegraph uninit`，后者会删除项目索引。
-
-如果此前只通过 Codex 市场安装插件，没有执行上述手动命令，那么卸载原来的同名插件后重新安装即可。
 
 ## 正式插件结构
 

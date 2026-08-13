@@ -1,5 +1,7 @@
 # TWG 安装与使用
 
+**来源**：[Atlassian TWG CLI](https://github.com/atlassian/twg-cli)，第三方外链接入。
+
 这个插件提供 Atlassian Teamwork Graph Skills。市场只管理 Skills，TWG CLI 和 OAuth 登录需要单独完成。
 
 ## 安装插件
@@ -34,6 +36,6 @@ twg doctor
 
 ## 更新
 
-当前审核基线保持为 1.1.1。升级前先审核新安装器与 CLI，并同步替换上一节的 SHA-256 和 `--version`；仅需修复当前版本时可原样重跑该命令。市场插件的更新方式见 [README：更新已安装插件](../../README.md#更新已安装插件)，完成后运行 `twg doctor`。
+插件源码不固定 SHA；重新安装时从上游默认分支取得最新提交。更新方式见 [README：更新已安装插件](../../README.md#更新已安装插件)。CLI 当前审核基线保持为 1.1.1；升级前先审核新安装器与 CLI，并同步替换上一节的 SHA-256 和 `--version`。仅需修复当前版本时可原样重跑该命令，完成后运行 `twg doctor`。
 
 不要运行 `twg setup` 或 `twg skills install`；它们会再安装一份 Skills。`twg update` 也可能刷新 Skills，市场模式下不作为默认更新方式。

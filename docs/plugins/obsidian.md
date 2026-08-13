@@ -1,5 +1,7 @@
 # Obsidian 安装与使用
 
+**来源**：[Obsidian Skills](https://github.com/kepano/obsidian-skills)，第三方外链接入。
+
 这个插件提供 Obsidian Markdown、Bases、JSON Canvas、Obsidian CLI 和网页正文提取 Skills。直接处理 Markdown、Base 和 Canvas 文件时不需要外部 CLI。
 
 ## 安装
@@ -34,4 +36,4 @@ defuddle --help
 
 ## 更新
 
-市场插件的更新方式见 [README：更新已安装插件](../../README.md#更新已安装插件)。Obsidian 桌面版通过其官方渠道更新；`defuddle` 的当前审核基线为 0.19.2，升级前先审核新版本并更新这里的精确版本。
+插件源码不固定 SHA；重新安装时从上游默认分支取得最新提交。更新方式见 [README：更新已安装插件](../../README.md#更新已安装插件)。Obsidian 桌面版通过其官方渠道更新；`defuddle` 的当前审核基线为 0.19.2，升级前先审核新版本并更新这里的精确版本。

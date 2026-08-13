@@ -1,10 +1,12 @@
 # mattpocock-skills 安装与使用
 
+**来源**：[Matt Pocock Skills](https://github.com/mattpocock/skills)，第三方外链接入。
+
 这个插件提供规划、TDD、调试、领域建模、代码审查等工程工作流 Skills，不包含 MCP，也没有强制的外部 CLI。
 
 ## 安装
 
-先按根目录 [README](../../README.md#本地使用) 添加 `agent-forge` 市场，再执行：
+先按根目录 [README](../../README.md#安装) 添加 `agent-forge` 市场，再执行：
 
 ```bash
 codex plugin add mattpocock-skills@agent-forge
@@ -28,4 +30,4 @@ codex plugin list --marketplace agent-forge
 
 ## 更新
 
-市场插件的更新方式见 [README：更新已安装插件](../../README.md#更新已安装插件)。
+插件源码不固定 SHA；重新安装时从上游默认分支取得最新提交。更新方式见 [README：更新已安装插件](../../README.md#更新已安装插件)。

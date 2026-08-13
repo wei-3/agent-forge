@@ -9,8 +9,7 @@
       "description": "Engineering workflow skills for planning, TDD, debugging, domain modeling, and code review.",
       "source": {
         "source": "url",
-        "url": "https://github.com/mattpocock/skills.git",
-        "sha": "ed37663cc5fbef691ddfecd080dff42f7e7e350d"
+        "url": "https://github.com/mattpocock/skills.git"
       },
       "author": {
         "name": "Matt Pocock"
@@ -29,8 +28,7 @@
       "description": "Skills for Obsidian Markdown, Bases, Canvas, CLI workflows, and web-content extraction.",
       "source": {
         "source": "url",
-        "url": "https://github.com/kepano/obsidian-skills.git",
-        "sha": "a1dc48e68138490d522c04cbf5822214c6eb1202"
+        "url": "https://github.com/kepano/obsidian-skills.git"
       },
       "author": {
         "name": "Steph Ango"
@@ -49,8 +47,7 @@
       "description": "Atlassian Teamwork Graph skills; requires the separately installed TWG CLI and login.",
       "source": {
         "source": "url",
-        "url": "https://github.com/atlassian/twg-cli.git",
-        "sha": "bbc5ac76bbef7d9b16bfeb9a60c6135ff0d890a9"
+        "url": "https://github.com/atlassian/twg-cli.git"
       },
       "author": {
         "name": "Atlassian"
@@ -70,8 +67,7 @@
       "source": {
         "source": "git-subdir",
         "url": "https://github.com/upstash/context7.git",
-        "path": "./plugins/codex/context7",
-        "sha": "305dd3ca10341fd0190825417bbd7a0c861490c9"
+        "path": "./plugins/codex/context7"
       },
       "author": {
         "name": "Upstash"
@@ -90,8 +86,7 @@
       "description": "Software-development workflows for planning, TDD, debugging, parallel execution, and review.",
       "source": {
         "source": "url",
-        "url": "https://github.com/obra/superpowers.git",
-        "sha": "3dcbd5c4b48e02263fbf4a3c01e3fe4f81d584d9"
+        "url": "https://github.com/obra/superpowers.git"
       },
       "author": {
         "name": "Jesse Vincent"
@@ -111,8 +106,7 @@
       "source": {
         "source": "git-subdir",
         "url": "https://github.com/Postman-Devrel/postman-claude-code-plugin.git",
-        "path": "./skills",
-        "sha": "b7b3c7a83486ee088844a96278411690523d389f"
+        "path": "./skills"
       },
       "author": {
         "name": "Postman"
@@ -146,8 +140,7 @@
       "description": "Minimalist software-development workflows that favor YAGNI and the smallest correct implementation.",
       "source": {
         "source": "url",
-        "url": "https://github.com/DietrichGebert/ponytail.git",
-        "sha": "16f29800fd2681bdf24f3eb4ccffe38be3baec6b"
+        "url": "https://github.com/DietrichGebert/ponytail.git"
       },
       "author": {
         "name": "Dietrich Gebert"
@@ -178,8 +171,7 @@
       "description": "Lark and Feishu workflow skills; requires the separately installed Lark CLI and login.",
       "source": {
         "source": "url",
-        "url": "https://github.com/larksuite/cli.git",
-        "sha": "a7865cd0a7416655535517a2a630848fde318761"
+        "url": "https://github.com/larksuite/cli.git"
       },
       "author": {
         "name": "LarkSuite"
