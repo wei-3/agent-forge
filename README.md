@@ -30,17 +30,17 @@ codex plugin add lark@agent-forge
 
 ## 插件清单
 
-| 插件 | 何时用 | 来源 |
-| --- | --- | --- |
-| [`mattpocock-skills`](docs/plugins/mattpocock-skills.md) | 想按规划、TDD、调试、领域建模和代码评审等工程纪律推进开发时 | [第三方外链](https://github.com/mattpocock/skills) |
-| [`obsidian`](docs/plugins/obsidian.md) | 编辑 Obsidian Markdown、Bases、Canvas，或抽取网页正文时 | [第三方外链](https://github.com/kepano/obsidian-skills) |
-| [`twg`](docs/plugins/twg.md) | 查询或操作 Jira、Confluence 等 Atlassian 工作数据时 | [第三方外链](https://github.com/atlassian/twg-cli) |
-| [`context7`](docs/plugins/context7.md) | 查询版本相关的最新库文档和代码示例时 | [第三方外链](https://github.com/upstash/context7) |
-| [`superpowers`](docs/plugins/superpowers.md) | 用头脑风暴、TDD、系统化调试、计划和评审流程推进开发时 | [第三方外链](https://github.com/obra/superpowers) |
-| [`postman`](docs/plugins/postman.md) | 发现、调用、测试 API，或管理 Postman 工作流时 | [第三方外链](https://github.com/Postman-Devrel/postman-claude-code-plugin) |
-| [`ponytail`](docs/plugins/ponytail.md) | 寻找最小实现，或审查代码中的过度工程时 | [第三方外链](https://github.com/DietrichGebert/ponytail) |
-| [`codegraph`](docs/plugins/codegraph.md) | 索引并探索跨仓库代码关系、引用和调用链时 | [第三方能力，本地适配](https://github.com/colbymchenry/codegraph) |
-| [`lark`](docs/plugins/lark.md) | 操作飞书文档、消息、日历、多维表格、邮箱、任务和会议时 | [第三方外链](https://github.com/larksuite/cli) |
+| 插件 | 何时用 |
+| --- | --- |
+| [`mattpocock-skills`](docs/plugins/mattpocock-skills.md) | 想按规划、TDD、调试、领域建模和代码评审等工程纪律推进开发时 |
+| [`obsidian`](docs/plugins/obsidian.md) | 编辑 Obsidian Markdown、Bases、Canvas，或抽取网页正文时 |
+| [`twg`](docs/plugins/twg.md) | 查询或操作 Jira、Confluence 等 Atlassian 工作数据时 |
+| [`context7`](docs/plugins/context7.md) | 查询版本相关的最新库文档和代码示例时 |
+| [`superpowers`](docs/plugins/superpowers.md) | 用头脑风暴、TDD、系统化调试、计划和评审流程推进开发时 |
+| [`postman`](docs/plugins/postman.md) | 发现、调用、测试 API，或管理 Postman 工作流时 |
+| [`ponytail`](docs/plugins/ponytail.md) | 寻找最小实现，或审查代码中的过度工程时 |
+| [`codegraph`](docs/plugins/codegraph.md) | 索引并探索跨仓库代码关系、引用和调用链时 |
+| [`lark`](docs/plugins/lark.md) | 操作飞书文档、消息、日历、多维表格、邮箱、任务和会议时 |
 
 ## 外部依赖
 
