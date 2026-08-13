@@ -1,5 +1,7 @@
 # Ponytail 安装与使用
 
+**来源**：[Ponytail](https://github.com/DietrichGebert/ponytail)，第三方外链接入。
+
 Ponytail 提供偏向 YAGNI、最小正确实现和反过度设计的 Skills，并通过 Codex lifecycle hooks 持续注入工作方式。
 
 ## 前置检查与安装
@@ -21,4 +23,4 @@ codex plugin add ponytail@agent-forge
 
 ## 更新
 
-市场插件的更新方式见 [README：更新已安装插件](../../README.md#更新已安装插件)。更新后重新审核 hooks，并新建任务。
+插件源码不固定 SHA；重新安装时从上游默认分支取得最新提交。更新方式见 [README：更新已安装插件](../../README.md#更新已安装插件)。更新后重新审核 hooks，并新建任务。

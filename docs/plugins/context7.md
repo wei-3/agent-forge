@@ -1,5 +1,7 @@
 # Context7 安装与使用
 
+**来源**：[Context7](https://github.com/upstash/context7)，第三方外链接入。
+
 Context7 是原生 Codex MCP 插件，用于查询版本相关的最新库文档。它直接连接远程 MCP，不需要额外安装 Node.js 或 Context7 CLI。
 
 ## 安装与认证
@@ -16,5 +18,5 @@ codex mcp list
 
 ## 更新与注意事项
 
-市场插件的更新方式见 [README：更新已安装插件](../../README.md#更新已安装插件)。市场已经注册 Context7 MCP，不要再执行 `npx ctx7 setup --codex` 或
+插件源码不固定 SHA；重新安装时从上游默认分支取得最新提交。更新方式见 [README：更新已安装插件](../../README.md#更新已安装插件)。市场已经注册 Context7 MCP，不要再执行 `npx ctx7 setup --codex` 或
 `codex mcp add context7 ...`。

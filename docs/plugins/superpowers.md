@@ -1,5 +1,7 @@
 # Superpowers 安装与使用
 
+**来源**：[Superpowers](https://github.com/obra/superpowers)，第三方外链接入。
+
 这个插件提供 brainstorming、TDD、系统化调试、计划执行、子代理协作和代码审查等开发流程 Skills。它没有 MCP、账号认证或必需的外部 CLI。
 
 ## 安装
@@ -17,4 +19,4 @@ codex plugin list --marketplace agent-forge
 
 ## 更新
 
-市场插件的更新方式见 [README：更新已安装插件](../../README.md#更新已安装插件)。
+插件源码不固定 SHA；重新安装时从上游默认分支取得最新提交。更新方式见 [README：更新已安装插件](../../README.md#更新已安装插件)。

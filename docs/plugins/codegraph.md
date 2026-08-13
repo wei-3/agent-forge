@@ -1,5 +1,7 @@
 # CodeGraph 安装与使用
 
+**来源**：[CodeGraph](https://github.com/colbymchenry/codegraph)，第三方能力；Agent Forge 仅维护本地适配层。
+
 这个插件是薄适配层：市场负责 Skill 和 `codegraph serve --mcp` 注册，外部 CodeGraph CLI 与每个项目的 `.codegraph/` 索引由用户管理。
 
 ## 安装插件
@@ -11,10 +13,10 @@ codex plugin list --marketplace agent-forge
 
 ## 安装 CLI
 
-使用 npm 安装已审核的 CLI：
+使用 npm 安装最新 CLI：
 
 ```bash
-npm install -g @colbymchenry/codegraph@1.5.0
+npm install -g @colbymchenry/codegraph
 codegraph --version
 ```
 
@@ -42,7 +44,9 @@ codegraph status
 
 ```bash
 codegraph upgrade --check
-codegraph upgrade 1.5.0
+codegraph upgrade
+codex plugin marketplace upgrade agent-forge
+codex plugin add codegraph@agent-forge
 ```
 
-当前审核基线保持为 1.5.0。升级到新版本前先审核上游发布，再同步更新本指南中的精确版本。市场插件的更新方式见 [README：更新已安装插件](../../README.md#更新已安装插件)。匿名遥测可用 `codegraph telemetry off` 关闭。
+`codegraph upgrade` 会更新到上游最新版本。更新后新建一个 Codex 任务，让新任务加载更新后的插件。匿名遥测可用 `codegraph telemetry off` 关闭。
