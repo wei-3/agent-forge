@@ -412,6 +412,7 @@ test('marketplace plugins satisfy the repository contract', () => {
   assert.equal(new Set(names).size, names.length, 'plugin names must be unique');
   const pluginsByName = new Map(marketplace.plugins.map((plugin) => [plugin.name, plugin]));
   const codegraph = pluginsByName.get('codegraph');
+  const worktreeLinks = pluginsByName.get('worktree-links');
 
   assert.ok(codegraph, 'codegraph is missing from the marketplace');
   assert.deepEqual(codegraph.source, {
@@ -421,6 +422,15 @@ test('marketplace plugins satisfy the repository contract', () => {
   assert.equal(codegraph.policy?.installation, 'AVAILABLE');
   assert.equal(codegraph.policy?.authentication, 'ON_INSTALL');
   assert.equal(codegraph.category, 'Developer Tools');
+
+  assert.ok(worktreeLinks, 'worktree-links is missing from the marketplace');
+  assert.deepEqual(worktreeLinks.source, {
+    source: 'local',
+    path: './plugins/worktree-links',
+  });
+  assert.equal(worktreeLinks.policy?.installation, 'AVAILABLE');
+  assert.equal(worktreeLinks.policy?.authentication, 'ON_INSTALL');
+  assert.equal(worktreeLinks.category, 'Developer Tools');
 
   for (const [name, expected] of Object.entries(THIRD_PARTY_PLUGINS)) {
     const plugin = pluginsByName.get(name);
@@ -552,6 +562,47 @@ test('marketplace plugins satisfy the repository contract', () => {
       },
     },
   });
+
+  const worktreeLinksHooks = readJson(
+    join(REPO_ROOT, 'plugins/worktree-links/hooks/hooks.json'),
+  ).hooks;
+  assert.deepEqual(Object.keys(worktreeLinksHooks), ['SessionStart']);
+  assert.ok(
+    Array.isArray(worktreeLinksHooks.SessionStart),
+    'worktree-links SessionStart must be an array',
+  );
+  assert.equal(
+    worktreeLinksHooks.SessionStart.length,
+    1,
+    'worktree-links must define exactly one SessionStart group',
+  );
+  const sessionStartHooks = worktreeLinksHooks.SessionStart[0]?.hooks;
+  assert.ok(Array.isArray(sessionStartHooks), 'worktree-links SessionStart hooks must be an array');
+  assert.equal(
+    sessionStartHooks.length,
+    1,
+    'worktree-links must define exactly one SessionStart hook',
+  );
+  assert.equal(
+    sessionStartHooks[0].type,
+    'command',
+    'worktree-links SessionStart hook must use the command type',
+  );
+  assert.equal(
+    sessionStartHooks[0].command,
+    'node "${PLUGIN_ROOT}/scripts/worktree-links.mjs"',
+    'worktree-links SessionStart hook must run its bundled script through PLUGIN_ROOT',
+  );
+  const worktreeLinksSkillPath = join(
+    REPO_ROOT,
+    'plugins/worktree-links/skills/worktree-links/SKILL.md',
+  );
+  const worktreeLinksSkill = readFileSync(worktreeLinksSkillPath, 'utf8');
+  const worktreeLinksFrontmatter = parseSkillFrontmatter(
+    worktreeLinksSkill,
+    'worktree-links/worktree-links',
+  );
+  assert.match(worktreeLinksFrontmatter.description, /[\u3400-\u9fff]/u);
 
   const readme = readFileSync(README_PATH, 'utf8');
   assert.ok(

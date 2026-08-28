@@ -25,6 +25,7 @@ codex plugin add superpowers@agent-forge
 codex plugin add postman@agent-forge
 codex plugin add ponytail@agent-forge
 codex plugin add codegraph@agent-forge
+codex plugin add worktree-links@agent-forge
 codex plugin add lark@agent-forge
 ```
 
@@ -40,6 +41,7 @@ codex plugin add lark@agent-forge
 | [`postman`](docs/plugins/postman.md) | 发现、调用、测试 API，或管理 Postman 工作流时 |
 | [`ponytail`](docs/plugins/ponytail.md) | 寻找最小实现，或审查代码中的过度工程时 |
 | [`codegraph`](docs/plugins/codegraph.md) | 索引并探索跨仓库代码关系、引用和调用链时 |
+| [`worktree-links`](docs/plugins/worktree-links.md) | 在多个 git worktree 间共享主工作区的 gitignored 本地文件时 |
 | [`lark`](docs/plugins/lark.md) | 操作飞书文档、消息、日历、多维表格、邮箱、任务和会议时 |
 
 ## 外部依赖
