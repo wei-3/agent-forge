@@ -1,0 +1,21 @@
+{
+  "name": "worktree-links",
+  "version": "0.1.0",
+  "description": "Keeps selected gitignored local files linked from a repository's main worktree into its linked worktrees.",
+  "author": {
+    "name": "Agent Forge"
+  },
+  "homepage": "https://github.com/wei-3/agent-forge/tree/main/plugins/worktree-links",
+  "repository": "https://github.com/wei-3/agent-forge",
+  "keywords": ["git", "worktree", "symlink", "codex"],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Worktree Links",
+    "shortDescription": "Share local files across git worktrees.",
+    "longDescription": "Configures a repository-local allowlist of ignored ordinary files and safely creates absolute symlinks in linked worktrees.",
+    "developerName": "Agent Forge",
+    "category": "Developer Tools",
+    "capabilities": ["Read", "Write"],
+    "defaultPrompt": "Set up or repair worktree links for this repository."
+  }
+}

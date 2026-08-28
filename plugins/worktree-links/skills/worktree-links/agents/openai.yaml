@@ -1,0 +1,4 @@
+interface:
+  display_name: "Worktree Links"
+  short_description: "Share ignored local files across git worktrees"
+  default_prompt: "Use $worktree-links to configure, repair, or check this repository's worktree symlinks."
