@@ -9,6 +9,8 @@ const MARKETPLACE_PATH = join(REPO_ROOT, '.agents/plugins/marketplace.json');
 const README_PATH = join(REPO_ROOT, 'README.md');
 const SLUG = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
 const HTTPS_GIT_URL = /^https:\/\/github\.com\/[^/]+\/[^/]+\.git$/;
+const GITHUB_REPOSITORY_URL = /^https:\/\/github\.com\/([^/]+)\/([^/]+)\/?$/;
+const GITHUB_REPOSITORY_SLUG = /^[^/]+\/[^/]+$/;
 const SEMVER =
   /^(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)(?:-(?:0|[1-9]\d*|\d*[A-Za-z-][0-9A-Za-z-]*)(?:\.(?:0|[1-9]\d*|\d*[A-Za-z-][0-9A-Za-z-]*))*)?(?:\+[0-9A-Za-z-]+(?:\.[0-9A-Za-z-]+)*)?$/;
 const INSTALLATION_POLICIES = new Set([
@@ -126,6 +128,12 @@ function normalizeLineEndings(contents) {
   return contents.replace(/\r\n?/gu, '\n');
 }
 
+function normalizeGitHubRepository(value, label) {
+  const match = GITHUB_REPOSITORY_URL.exec(value.trim());
+  assert.ok(match, `${label} must be an HTTPS GitHub repository URL`);
+  return `${match[1]}/${match[2].replace(/\.git$/u, '')}`.toLowerCase();
+}
+
 function parseFlatYaml(contents, label) {
   const result = {};
 
@@ -157,7 +165,7 @@ function parseFlatYaml(contents, label) {
 
     const value = scalar.replace(/(?:^|\s+)#.*$/u, '').trim();
     assert.ok(
-      value && !/^(?:null|~)$/iu.test(value),
+      value && !/^(?:null|~|true|false)$/iu.test(value),
       `${label} line ${index + 1} must contain a string value`,
     );
     result[key] = value;
@@ -304,6 +312,15 @@ test('flat YAML rejects null values hidden by inline comments', () => {
     () => parseFlatYaml('display_name: null # YAML null', 'fixture'),
     /fixture line 1/u,
   );
+});
+
+test('flat YAML rejects boolean scalar values', () => {
+  for (const value of ['true', 'false']) {
+    assert.throws(
+      () => parseFlatYaml(`enabled: ${value}`, 'fixture'),
+      /fixture line 1/u,
+    );
+  }
 });
 
 test('flat YAML accepts comments after quoted strings', () => {
@@ -474,6 +491,11 @@ test('marketplace plugins satisfy the repository contract', () => {
       assert.ok(isNonEmptyString(plugin.description), `${plugin.name} description is required`);
       assert.ok(isNonEmptyString(plugin.author?.name), `${plugin.name} author.name is required`);
       assert.ok(isNonEmptyString(plugin.repository), `${plugin.name} repository is required`);
+      assert.equal(
+        normalizeGitHubRepository(plugin.source.url, `${plugin.name} source URL`),
+        normalizeGitHubRepository(plugin.repository, `${plugin.name} repository`),
+        `${plugin.name} source URL and repository must identify the same GitHub repository`,
+      );
       assert.ok(isNonEmptyString(plugin.homepage), `${plugin.name} homepage is required`);
 
       if (plugin.source.source === 'git-subdir') {
@@ -590,8 +612,8 @@ test('marketplace plugins satisfy the repository contract', () => {
   );
   assert.equal(
     sessionStartHooks[0].command,
-    'node "${PLUGIN_ROOT}/scripts/worktree-links.mjs"',
-    'worktree-links SessionStart hook must run its bundled script through PLUGIN_ROOT',
+    'node "${CLAUDE_PLUGIN_ROOT}/scripts/worktree-links.mjs"',
+    'worktree-links SessionStart hook must run its bundled script through CLAUDE_PLUGIN_ROOT (Codex resolves it too, for compatibility)',
   );
   const worktreeLinksSkillPath = join(
     REPO_ROOT,
@@ -662,4 +684,113 @@ test('local plugin skills satisfy the repository metadata contract', () => {
     const manifest = readJson(join(pluginRoot, '.codex-plugin/plugin.json'));
     validateLocalPluginSkills(pluginRoot, manifest, plugin.name);
   }
+});
+
+const CLAUDE_MARKETPLACE_PATH = join(REPO_ROOT, '.claude-plugin/marketplace.json');
+
+test('Claude Code marketplace mirrors the Codex plugin lineup', () => {
+  const codexMarketplace = readJson(MARKETPLACE_PATH);
+  const claudeMarketplace = readJson(CLAUDE_MARKETPLACE_PATH);
+
+  assert.equal(claudeMarketplace.name, 'agent-forge');
+  assert.ok(isNonEmptyString(claudeMarketplace.owner?.name), 'owner.name is required');
+  assert.ok(Array.isArray(claudeMarketplace.plugins), 'plugins must be an array');
+
+  const claudeNames = claudeMarketplace.plugins.map((plugin) => plugin.name);
+  assert.equal(new Set(claudeNames).size, claudeNames.length, 'plugin names must be unique');
+
+  const codexNames = codexMarketplace.plugins.map((plugin) => plugin.name).sort();
+  assert.deepEqual(
+    [...claudeNames].sort(),
+    codexNames,
+    'Claude Code marketplace must offer exactly the same plugins as the Codex marketplace',
+  );
+
+  const codexByName = new Map(codexMarketplace.plugins.map((plugin) => [plugin.name, plugin]));
+  const readme = readFileSync(README_PATH, 'utf8');
+  assert.match(readme, /\/plugin marketplace add wei-3\/agent-forge/u);
+  assert.match(readme, /\/reload-plugins/u);
+
+  for (const plugin of claudeMarketplace.plugins) {
+    assert.ok(isNonEmptyString(plugin.name), 'plugin name is required');
+    assert.ok(
+      readme.includes(`/plugin install ${plugin.name}@agent-forge`),
+      `${plugin.name} is missing from the Claude Code full installation block`,
+    );
+    assert.ok(isNonEmptyString(plugin.description), `${plugin.name} description is required`);
+    assert.ok(isNonEmptyString(plugin.category), `${plugin.name} category is required`);
+    const codexPlugin = codexByName.get(plugin.name);
+
+    if (typeof plugin.source === 'string') {
+      assert.equal(
+        plugin.source,
+        `./plugins/${plugin.name}`,
+        `${plugin.name} local source must resolve to ./plugins/${plugin.name}`,
+      );
+      assert.deepEqual(
+        codexPlugin.source,
+        { source: 'local', path: `./plugins/${plugin.name}` },
+        `${plugin.name} must also be local on the Codex side`,
+      );
+      const pluginRoot = resolve(REPO_ROOT, plugin.source);
+      const manifestPath = join(pluginRoot, '.claude-plugin/plugin.json');
+      assert.ok(existsSync(manifestPath), `${plugin.name} is missing its Claude Code manifest`);
+      const manifest = readJson(manifestPath);
+      assert.equal(manifest.name, plugin.name);
+      assert.match(manifest.version, SEMVER, `${plugin.name} Claude Code manifest version must be strict semver`);
+      assert.ok(
+        isNonEmptyString(manifest.description),
+        `${plugin.name} Claude Code manifest description is required`,
+      );
+    } else {
+      assert.ok(
+        plugin.source && typeof plugin.source === 'object',
+        `${plugin.name} source must be an object for a remote plugin`,
+      );
+      assert.ok(
+        ['npm', 'url', 'github', 'git-subdir'].includes(plugin.source.source),
+        `${plugin.name} has an unsupported remote source type`,
+      );
+      assert.ok(codexPlugin, `${plugin.name} is missing from the Codex marketplace`);
+      assert.ok(
+        isNonEmptyString(plugin.repository) && plugin.repository === codexPlugin.repository,
+        `${plugin.name} must reference the same upstream repository on both hosts`,
+      );
+      if (plugin.source.source === 'github') {
+        assert.ok(isNonEmptyString(plugin.source.repo), `${plugin.name} GitHub source repo is required`);
+        assert.match(plugin.source.repo, GITHUB_REPOSITORY_SLUG, `${plugin.name} GitHub source repo is invalid`);
+        assert.equal(
+          normalizeGitHubRepository(`https://github.com/${plugin.source.repo}`, `${plugin.name} source repo`),
+          normalizeGitHubRepository(plugin.repository, `${plugin.name} repository`),
+          `${plugin.name} GitHub source and repository must identify the same GitHub repository`,
+        );
+      } else if (plugin.source.source === 'url') {
+        assert.ok(isNonEmptyString(plugin.source.url), `${plugin.name} URL source URL is required`);
+        assert.match(plugin.source.url, HTTPS_GIT_URL, `${plugin.name} URL source must be an HTTPS Git URL`);
+        assert.equal(
+          normalizeGitHubRepository(plugin.source.url, `${plugin.name} source URL`),
+          normalizeGitHubRepository(plugin.repository, `${plugin.name} repository`),
+          `${plugin.name} URL source and repository must identify the same GitHub repository`,
+        );
+      } else if (plugin.source.source === 'git-subdir') {
+        assert.ok(isNonEmptyString(plugin.source.url), `${plugin.name} git-subdir source URL is required`);
+        assert.match(plugin.source.url, HTTPS_GIT_URL, `${plugin.name} git-subdir source URL must be an HTTPS Git URL`);
+        assert.equal(
+          normalizeGitHubRepository(plugin.source.url, `${plugin.name} source URL`),
+          normalizeGitHubRepository(plugin.repository, `${plugin.name} repository`),
+          `${plugin.name} git-subdir source and repository must identify the same GitHub repository`,
+        );
+        assertSafeGitSubdirPath(plugin.source.path, plugin.name);
+      } else if (plugin.source.source === 'npm') {
+        assert.ok(isNonEmptyString(plugin.source.package), `${plugin.name} npm package is required`);
+      }
+    }
+  }
+
+  const claudeTwg = claudeMarketplace.plugins.find((plugin) => plugin.name === 'twg');
+  assert.equal(
+    claudeTwg.license,
+    undefined,
+    'twg skill licensing must not be represented as the repository root license',
+  );
 });

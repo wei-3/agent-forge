@@ -1,10 +1,12 @@
 # Agent Forge
 
-一个以 Codex 为第一支持目标的插件市场。自研插件使用本地目录；第三方插件通过外链接入，不固定 commit SHA，重新安装时跟随上游默认分支最新版本。
+一个以 Codex 为第一支持目标、同时支持 Claude Code 的插件市场。自研插件使用本地目录，两端各带一份原生 manifest；第三方插件通过外链接入，不固定 commit SHA，重新安装时跟随上游默认分支最新版本。
 
 ## 安装
 
-添加市场并安装需要的插件：
+添加市场并安装需要的插件。两端各给了一个全量安装块，不必照着清单手打插件名。
+
+### Codex
 
 ```bash
 codex plugin marketplace add wei-3/agent-forge
@@ -29,6 +31,32 @@ codex plugin add worktree-links@agent-forge
 codex plugin add lark@agent-forge
 ```
 
+### Claude Code
+
+```text
+/plugin marketplace add wei-3/agent-forge
+/plugin install <插件名>@agent-forge
+```
+
+将 `<插件名>` 替换为下方清单中的名称，装完执行 `/reload-plugins` 生效。
+
+全部装齐：
+
+```text
+/plugin marketplace add wei-3/agent-forge
+/plugin install mattpocock-skills@agent-forge
+/plugin install obsidian@agent-forge
+/plugin install twg@agent-forge
+/plugin install context7@agent-forge
+/plugin install superpowers@agent-forge
+/plugin install postman@agent-forge
+/plugin install ponytail@agent-forge
+/plugin install codegraph@agent-forge
+/plugin install worktree-links@agent-forge
+/plugin install lark@agent-forge
+/reload-plugins
+```
+
 ## 插件清单
 
 | 插件 | 何时用 |
@@ -46,11 +74,13 @@ codex plugin add lark@agent-forge
 
 ## 外部依赖
 
-Codex 安装插件时不会安装系统级 CLI。每个插件的独立中文指南列出了外部依赖、认证、首次配置、验证和更新步骤。市场负责 Skills 与 MCP 注册；不要再运行会复制 Skills 或重复写入 MCP 的上游安装步骤。
+两端安装插件时都不会安装系统级 CLI。每个插件的独立中文指南列出了外部依赖、认证、首次配置、验证和更新步骤。市场负责 Skills 与 MCP 注册；不要再运行会复制 Skills 或重复写入 MCP 的上游安装步骤。
 
 不要把 API Key、Token 或其他凭据写入市场清单或仓库。
 
 ## 更新已安装插件
+
+### Codex
 
 如果 `agent-forge` 通过 Git 来源添加，先刷新市场快照，再重新安装插件。第三方插件会在重新安装时取得上游默认分支的最新提交：
 
@@ -69,6 +99,10 @@ codex plugin add <plugin-name>@agent-forge
 
 第三方上游更新不会自动进入已经安装的插件缓存。外链不固定 SHA 的代价是安装结果不可复现；上游推送、删除文件或调整目录都可能直接影响下一次安装。
 
+### Claude Code
+
+会话内没有单独更新一个插件的命令：在 `/plugin` 面板的 Marketplaces 里选中 `agent-forge` 触发市场更新，再执行 `/reload-plugins` 让新会话加载更新后的 Skills、MCP 和 hooks。第三方外链同样不固定 SHA，跟随上游默认分支最新提交。
+
 ## 本地开发
 
 在仓库根目录添加本地市场：
@@ -78,15 +112,26 @@ codex plugin marketplace add .
 codex plugin add <插件名>@agent-forge
 ```
 
+```text
+/plugin marketplace add .
+/plugin install <插件名>@agent-forge
+```
+
 ## 正式插件结构
 
-自己编写的正式插件放在 `plugins/<plugin-name>/`。外部第三方插件不复制到这里：
+自己编写的正式插件放在 `plugins/<plugin-name>/`，两端各带一份原生 manifest。外部第三方插件不复制到这里：
 
 ```text
 plugins/<plugin-name>/
 ├── .codex-plugin/
 │   └── plugin.json
-├── .mcp.json                   # 仅 MCP 插件需要
+├── .claude-plugin/
+│   └── plugin.json
+├── .mcp.json                   # 仅 MCP 插件需要；两端都按约定自动加载
+├── hooks/
+│   └── hooks.json               # 仅需要 hooks 的插件才有；两端共用一份，
+│                                 # 插件根路径变量统一写 ${CLAUDE_PLUGIN_ROOT}
+│                                 # （Codex 为兼容同时接受这个变量名）
 ├── skills/
 │   └── <skill-name>/
 │       ├── SKILL.md
@@ -94,7 +139,7 @@ plugins/<plugin-name>/
 └── README.md                   # 可选；用户指南统一放在 docs/plugins/
 ```
 
-插件目录名、市场条目 `name` 和插件 manifest 的 `name` 必须一致。
+插件目录名、两份市场清单里的 `name`、以及两份插件 manifest 的 `name` 必须一致。
 
 ## 验证
 
@@ -104,9 +149,3 @@ Skill 元数据；不需要安装 Python 或 PyYAML：
 ```bash
 node --test
 ```
-
-## Claude Code
-
-当前不发布 Claude Code 市场。以后正式支持时，为市场增加
-`.claude-plugin/marketplace.json`，并为实际支持 Claude Code 的插件增加
-`.claude-plugin/plugin.json`。

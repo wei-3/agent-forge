@@ -12,6 +12,9 @@ codex mcp login context7
 codex mcp list
 ```
 
+Claude Code 用户改用 `/plugin install context7@agent-forge`（先执行一次
+`/plugin marketplace add wei-3/agent-forge`），随后按插件提示完成 MCP 授权。
+
 首次连接通常会自动打开 OAuth；只有未自动弹出或需要重新登录时，才手动执行 `codex mcp login context7`。安装后新建任务，例如要求：
 
 > 使用 Context7 查询 React `useEffect` 的最新文档。

@@ -11,6 +11,9 @@ codex plugin add superpowers@agent-forge
 codex plugin list --marketplace agent-forge
 ```
 
+Claude Code 用户改用 `/plugin install superpowers@agent-forge`（先执行一次
+`/plugin marketplace add wei-3/agent-forge`）。
+
 安装后新建一个 Codex 任务，并可明确要求：
 
 > 使用 `superpowers:brainstorming` 帮我梳理这个功能。

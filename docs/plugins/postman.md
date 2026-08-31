@@ -12,6 +12,9 @@ codex mcp login postman
 codex mcp list
 ```
 
+Claude Code 用户改用 `/plugin install postman@agent-forge`（先执行一次
+`/plugin marketplace add wei-3/agent-forge`），随后按插件提示完成 MCP 授权。
+
 OAuth 完成后新建任务，可让 Codex“列出我的 Postman workspaces”验证连接。当前市场固定 US MCP 端点；Postman EU MCP 不支持这套 OAuth，EU 用户需要单独的 API Key 适配，不能直接照搬此配置。
 
 ## 可选 Postman CLI

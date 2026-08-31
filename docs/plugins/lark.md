@@ -12,6 +12,9 @@ npm install -g @larksuite/cli@1.0.91
 lark-cli --version
 ```
 
+Claude Code 用户改用 `/plugin install lark@agent-forge`（先执行一次
+`/plugin marketplace add wei-3/agent-forge`），CLI 安装步骤相同。
+
 不要使用 `npx @larksuite/cli install`：该安装向导还会全局安装一份 Skills，与市场重复。
 
 ## 首次配置与认证

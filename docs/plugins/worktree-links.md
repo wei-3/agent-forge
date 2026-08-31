@@ -1,6 +1,6 @@
 # worktree-links
 
-`worktree-links` 是 Agent Forge 自有的 Codex-only 插件。源码位于
+`worktree-links` 是 Agent Forge 自有插件，同时支持 Codex 与 Claude Code。源码位于
 [wei-3/agent-forge](https://github.com/wei-3/agent-forge)，不接入或依赖其他插件市场。
 
 ## 依赖
@@ -10,9 +10,19 @@
 
 不需要安装 npm 依赖。
 
+## 安装
+
+```bash
+codex plugin add worktree-links@agent-forge
+```
+
+```text
+/plugin install worktree-links@agent-forge
+```
+
 ## 使用
 
-安装后新建 Codex 任务，在主工作区让 `$worktree-links` 执行：
+安装后新建一个任务，在主工作区让 `$worktree-links` 执行：
 
 ```bash
 node <插件目录>/scripts/worktree-links.mjs init notes.local private/settings.local
@@ -32,9 +42,11 @@ node <插件目录>/scripts/worktree-links.mjs check [--verbose] [target]
 
 ## 自动层边界
 
-插件只挂 Codex `SessionStart`。进入已有 linked worktree 并启动或恢复会话时会自动补链；
-会话中途新建 worktree 后需运行 `fix` 或 `fixall`。Codex 在 hook 之前读取指令文件，
-因此不要把依赖首会话生效的 `AGENTS.md` 等文件作为主要使用场景。
+插件只挂 `SessionStart`，Codex 与 Claude Code 共用同一份 `hooks/hooks.json`（插件根路径
+统一写 `${CLAUDE_PLUGIN_ROOT}`，Codex 为兼容同时接受这个变量名）。进入已有 linked
+worktree 并启动或恢复会话时会自动补链；会话中途新建 worktree 后需运行 `fix` 或
+`fixall`。两端都会在 hook 之前读取指令文件，因此不要把依赖首会话生效的 `AGENTS.md`
+等文件作为主要使用场景。
 
 `check` 只读，问题状态为 `MISSING`、`SOURCE_MISSING`、`DANGLING`、`MISTARGET` 和
 `DIVERGED`。默认只输出问题；增加 `--verbose` 后还会列出每个健康链接及其绝对目标。
