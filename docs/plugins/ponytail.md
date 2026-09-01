@@ -13,6 +13,9 @@ node --version
 codex plugin add ponytail@agent-forge
 ```
 
+Claude Code 用户改用 `/plugin install ponytail@agent-forge`（先执行一次
+`/plugin marketplace add wei-3/agent-forge`），随后在启用插件时按提示审核其声明的 hooks。
+
 安装后：
 
 1. Codex Desktop 完全重启；CLI 则重新启动 `codex`。

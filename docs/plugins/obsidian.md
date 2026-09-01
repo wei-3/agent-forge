@@ -11,6 +11,9 @@ codex plugin add obsidian@agent-forge
 codex plugin list --marketplace agent-forge
 ```
 
+Claude Code 用户改用 `/plugin install obsidian@agent-forge`（先执行一次
+`/plugin marketplace add wei-3/agent-forge`）。
+
 安装后新建一个 Codex 任务。
 
 ## 可选外部工具

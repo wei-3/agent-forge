@@ -1,0 +1,11 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-plugin-manifest.json",
+  "name": "codegraph",
+  "version": "0.1.0",
+  "description": "Local adapter for exploring indexed repositories with the external CodeGraph CLI.",
+  "author": {
+    "name": "Agent Forge"
+  },
+  "homepage": "https://colbymchenry.github.io/codegraph/",
+  "repository": "https://github.com/colbymchenry/codegraph"
+}

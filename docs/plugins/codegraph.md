@@ -11,6 +11,9 @@ codex plugin add codegraph@agent-forge
 codex plugin list --marketplace agent-forge
 ```
 
+Claude Code 用户改用 `/plugin install codegraph@agent-forge`（先执行一次
+`/plugin marketplace add wei-3/agent-forge`）。
+
 ## 安装 CLI
 
 使用 npm 安装最新 CLI：

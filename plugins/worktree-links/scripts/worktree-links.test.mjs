@@ -29,9 +29,19 @@ const ROUTING_ENV = new Set([
   'GIT_ALTERNATE_OBJECT_DIRECTORIES',
   'GIT_CEILING_DIRECTORIES',
 ]);
+const NULL_DEVICE = process.platform === 'win32' ? 'NUL' : '/dev/null';
+const SUBPROCESS_TIMEOUT = 10_000;
+const SUBPROCESS_KILL_GRACE = 1_000;
 const CLEAN_ENV = Object.fromEntries(
-  Object.entries(process.env).filter(([name]) => !ROUTING_ENV.has(name)),
+  Object.entries(process.env).filter(([name]) => (
+    !ROUTING_ENV.has(name) && !name.startsWith('GIT_CONFIG_')
+  )),
 );
+Object.assign(CLEAN_ENV, {
+  GIT_CONFIG_GLOBAL: NULL_DEVICE,
+  GIT_CONFIG_NOSYSTEM: '1',
+  GIT_CONFIG_SYSTEM: NULL_DEVICE,
+});
 
 function git(cwd, ...args) {
   return execFileSync('git', args, { cwd, encoding: 'utf8', env: CLEAN_ENV }).trim();
@@ -43,6 +53,7 @@ function run(cwd, args = [], options = {}) {
     encoding: 'utf8',
     env: { ...CLEAN_ENV, ...options.env },
     input: options.input,
+    timeout: SUBPROCESS_TIMEOUT,
   });
 }
 
@@ -53,10 +64,45 @@ function runAsync(cwd, args) {
       env: CLEAN_ENV,
       stdio: ['ignore', 'pipe', 'pipe'],
     });
+    let stdout = '';
     let stderr = '';
+    let settled = false;
+    let timedOut = false;
+    let timeout;
+    let killTimeout;
+    const finish = (result) => {
+      if (settled) return;
+      settled = true;
+      clearTimeout(timeout);
+      clearTimeout(killTimeout);
+      resolveRun(result);
+    };
+    child.stdout.setEncoding('utf8');
+    child.stdout.on('data', (chunk) => { stdout += chunk; });
     child.stderr.setEncoding('utf8');
     child.stderr.on('data', (chunk) => { stderr += chunk; });
-    child.on('close', (status) => resolveRun({ status, stderr }));
+    child.on('error', (error) => finish({ status: child.exitCode, stdout, stderr, error, timedOut }));
+    child.on('close', (status, signal) => finish({ status, signal, stdout, stderr, timedOut }));
+    timeout = setTimeout(() => {
+      timedOut = true;
+      child.kill('SIGTERM');
+      killTimeout = setTimeout(() => {
+        if (settled) return;
+        child.kill('SIGKILL');
+        killTimeout = setTimeout(() => {
+          if (settled) return;
+          child.stdout.destroy();
+          child.stderr.destroy();
+          finish({
+            status: child.exitCode,
+            signal: 'SIGKILL',
+            stdout,
+            stderr,
+            timedOut: true,
+          });
+        }, SUBPROCESS_KILL_GRACE);
+      }, SUBPROCESS_KILL_GRACE);
+    }, SUBPROCESS_TIMEOUT);
   });
 }
 
@@ -200,6 +246,13 @@ test('check reports every unhealthy state without changing files', (t) => {
   }
   assert.ok(lstatSync(join(target, 'dangling.local')).isSymbolicLink());
   assert.equal(readFileSync(join(target, 'diverged.local'), 'utf8'), 'copy\n');
+
+  const fixResult = run(target, ['fix']);
+  assert.equal(fixResult.status, 1);
+  assert.match(fixResult.stderr, /^worktree-links: DANGLING dangling\.local/mu);
+  assert.match(fixResult.stderr, /^worktree-links: MISTARGET mistarget\.local/mu);
+  assert.equal(readlinkSync(join(target, 'dangling.local')), join(root, 'gone'));
+  assert.equal(readlinkSync(join(target, 'mistarget.local')), join(root, 'other'));
 });
 
 test('check is quiet and successful after fix', (t) => {
@@ -506,19 +559,25 @@ test('CLI usage errors exit 2', (t) => {
   }
 });
 
-test('plugin package exposes one Codex SessionStart hook through PLUGIN_ROOT', () => {
-  const manifestPath = join(PLUGIN_ROOT, '.codex-plugin/plugin.json');
+test('plugin package exposes one SessionStart hook shared by Codex and Claude Code', () => {
+  const codexManifestPath = join(PLUGIN_ROOT, '.codex-plugin/plugin.json');
+  const claudeManifestPath = join(PLUGIN_ROOT, '.claude-plugin/plugin.json');
   const hooksPath = join(PLUGIN_ROOT, 'hooks/hooks.json');
-  assert.ok(existsSync(manifestPath), 'plugin manifest is missing');
+  assert.ok(existsSync(codexManifestPath), 'Codex plugin manifest is missing');
+  assert.ok(existsSync(claudeManifestPath), 'Claude Code plugin manifest is missing');
   assert.ok(existsSync(hooksPath), 'hooks manifest is missing');
 
-  const manifest = JSON.parse(readFileSync(manifestPath, 'utf8'));
+  const codexManifest = JSON.parse(readFileSync(codexManifestPath, 'utf8'));
+  const claudeManifest = JSON.parse(readFileSync(claudeManifestPath, 'utf8'));
   const hooks = JSON.parse(readFileSync(hooksPath, 'utf8')).hooks;
-  assert.equal(manifest.name, 'worktree-links');
-  assert.equal(manifest.hooks, undefined);
+  assert.equal(codexManifest.name, 'worktree-links');
+  assert.equal(codexManifest.hooks, undefined);
+  assert.equal(claudeManifest.name, 'worktree-links');
+  assert.equal(claudeManifest.hooks, undefined);
   assert.deepEqual(Object.keys(hooks), ['SessionStart']);
   assert.equal(hooks.SessionStart.length, 1);
   const command = hooks.SessionStart[0].hooks[0].command;
-  assert.match(command, /\$\{PLUGIN_ROOT\}/u);
-  assert.doesNotMatch(command, /CLAUDE_PLUGIN_ROOT/u);
+  // Codex reads both ${PLUGIN_ROOT} and ${CLAUDE_PLUGIN_ROOT} for compatibility;
+  // Claude Code only resolves the latter, so the shared file must use it.
+  assert.equal(command, 'node "${CLAUDE_PLUGIN_ROOT}/scripts/worktree-links.mjs"');
 });

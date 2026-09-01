@@ -11,6 +11,9 @@ codex plugin add twg@agent-forge
 codex plugin list --marketplace agent-forge
 ```
 
+Claude Code 用户改用 `/plugin install twg@agent-forge`（先执行一次
+`/plugin marketplace add wei-3/agent-forge`）。
+
 ## 安装 CLI 并登录
 
 官方安装器默认也会安装 Skills，因此必须跳过这一部分，避免和市场重复。下载后先校验本次审核的脚本 SHA-256，再固定安装 CLI 1.2.6：

@@ -1,12 +1,12 @@
 {
-  "description": "Repair configured links when Codex starts inside an existing linked worktree.",
+  "description": "Repair configured links when a session starts inside an existing linked worktree. Shared by the Codex and Claude Code manifests; ${CLAUDE_PLUGIN_ROOT} resolves on both hosts.",
   "hooks": {
     "SessionStart": [
       {
         "hooks": [
           {
             "type": "command",
-            "command": "node \"${PLUGIN_ROOT}/scripts/worktree-links.mjs\"",
+            "command": "node \"${CLAUDE_PLUGIN_ROOT}/scripts/worktree-links.mjs\"",
             "timeout": 10
           }
         ]
