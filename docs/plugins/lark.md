@@ -8,7 +8,7 @@
 
 ```bash
 codex plugin add lark@agent-forge
-npm install -g @larksuite/cli@1.0.91
+npm install -g @larksuite/cli@1.0.94
 lark-cli --version
 ```
 
@@ -36,8 +36,10 @@ lark-cli auth status --verify
 ## 更新与注意事项
 
 ```bash
-npm install -g @larksuite/cli@1.0.91
+npm install -g @larksuite/cli@1.0.94
 ```
 
-插件源码不固定 SHA；重新安装时从上游默认分支取得最新提交。更新方式见 [README：更新已安装插件](../../README.md#更新已安装插件)。CLI 当前审核基线为 1.0.91；升级前先审核新的 Lark 发布并更新这里的精确版本。不要运行 `lark-cli update` 或
+插件源码不固定 SHA；重新安装时从上游默认分支取得最新提交。更新方式见 [README：更新已安装插件](../../README.md#更新已安装插件)。CLI 发布说明核对基线为 1.0.94；升级前先审核新的 Lark 发布并更新这里的精确版本。不要运行 `lark-cli update` 或
 `npx skills add larksuite/cli -y -g`；它们会产生第二份 Skills。
+
+从 1.0.91 升级时注意：[上游发布说明](https://github.com/larksuite/cli/blob/main/CHANGELOG.md)中，1.0.93 移除了旧版 Sheets 命令接口；1.0.94 从日历事件输出中移除了 `app_link`，应使用分享链接。依赖这些命令或字段的脚本需要同步调整。

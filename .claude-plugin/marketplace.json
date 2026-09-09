@@ -15,7 +15,7 @@
       "source": { "source": "github", "repo": "mattpocock/skills" },
       "author": { "name": "Matt Pocock" },
       "repository": "https://github.com/mattpocock/skills",
-      "homepage": "https://www.aihero.dev",
+      "homepage": "https://www.aihero.dev/s/skills-newsletter",
       "license": "MIT",
       "category": "Developer Tools"
     },
@@ -31,7 +31,7 @@
     },
     {
       "name": "twg",
-      "description": "Atlassian Teamwork Graph skills; requires the separately installed TWG CLI and login.",
+      "description": "Atlassian Teamwork Graph skills for Jira, Confluence, enterprise knowledge search, context discovery, responsibility routing, and engineering, operational, and status reporting; requires the separately installed TWG CLI and login.",
       "source": { "source": "github", "repo": "atlassian/twg-cli" },
       "strict": false,
       "author": { "name": "Atlassian" },
@@ -65,7 +65,7 @@
     },
     {
       "name": "postman",
-      "description": "Seven Postman API workflow skills plus the Full Postman MCP server.",
+      "description": "Eleven Postman API and Flows workflow skills plus the Full Postman MCP server.",
       "source": { "source": "github", "repo": "Postman-Devrel/postman-claude-code-plugin" },
       "author": { "name": "Postman" },
       "repository": "https://github.com/Postman-Devrel/postman-claude-code-plugin",
