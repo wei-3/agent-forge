@@ -2,7 +2,9 @@
 
 **来源**：[Postman Claude Code Plugin](https://github.com/Postman-Devrel/postman-claude-code-plugin)，第三方外链接入。
 
-这个插件提供 7 个 API 工作流 Skills，并注册 Postman US Full MCP。MCP 与可选 Postman CLI 的登录彼此独立。
+这个插件提供 11 个 API 与 Flows 工作流 Skills，并注册 Postman US Full MCP。MCP 与可选 Postman CLI 的登录彼此独立。
+
+源码直接来自 Postman 官方仓库。Codex 通过市场清单显式列出技能路径，目前包含 `deploy-flow`、`get-flow-run`、`list-flows`、`trigger-flow` 四个 Flows 技能；上游新增技能时，需要同步这份清单。Claude Code 直接加载官方插件整包。
 
 ## 安装与 MCP 认证
 

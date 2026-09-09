@@ -108,12 +108,16 @@ const APPROVED_REMOTE_URLS = new Set(
 );
 const POSTMAN_SKILLS = [
   './agent-ready-apis',
+  './deploy-flow',
   './generate-spec',
+  './get-flow-run',
+  './list-flows',
   './postman-cli',
   './postman-context',
   './postman-knowledge',
   './run-collection',
   './send-request',
+  './trigger-flow',
 ];
 
 function readJson(path) {
