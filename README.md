@@ -149,3 +149,11 @@ Skill 元数据；不需要安装 Python 或 PyYAML：
 ```bash
 node --test
 ```
+
+GitHub Actions 的 [CI 工作流](.github/workflows/ci.yml) 在 PR 创建或更新、推送到
+`main` 时自动运行，也支持合入默认分支后在 Actions 页面手动触发。
+工作流使用 GitHub 托管的标准 `ubuntu-latest` runner 和 Node.js 24，直接执行
+`node --test`，不需要安装项目依赖、注册自托管 runner 或配置 Secrets。
+每次运行最多 10 分钟，同一分支的新运行会取消旧运行。
+
+这是现有测试的 CI 检查，不包含 AI 代码审查。公开仓库的标准托管 runner 运行时间免费。
