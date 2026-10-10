@@ -5,6 +5,27 @@
   },
   "plugins": [
     {
+      "name": "show-me",
+      "description": "Explain the current topic with concise diagrams, code-shape sketches, and focused HTML artifacts.",
+      "source": {
+        "source": "git-subdir",
+        "url": "https://github.com/humanlayer/skills.git",
+        "path": "./plugins/show-me"
+      },
+      "author": {
+        "name": "humanlayer"
+      },
+      "repository": "https://github.com/humanlayer/skills",
+      "homepage": "https://github.com/humanlayer/skills/tree/main/plugins/show-me",
+      "license": "MIT",
+      "skills": "./skills/",
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Productivity"
+    },
+    {
       "name": "mattpocock-skills",
       "description": "Engineering workflow skills for planning, TDD, debugging, domain modeling, and code review.",
       "source": {

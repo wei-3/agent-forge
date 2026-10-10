@@ -36,6 +36,15 @@ const LOCAL_MANIFEST_FIELDS = new Set([
   'keywords',
 ]);
 const THIRD_PARTY_PLUGINS = {
+  'show-me': {
+    source: {
+      source: 'git-subdir',
+      url: 'https://github.com/humanlayer/skills.git',
+      path: './plugins/show-me',
+    },
+    authentication: 'ON_INSTALL',
+    category: 'Productivity',
+  },
   'mattpocock-skills': {
     source: {
       source: 'url',
@@ -691,6 +700,19 @@ test('local plugin skills satisfy the repository metadata contract', () => {
 });
 
 const CLAUDE_MARKETPLACE_PATH = join(REPO_ROOT, '.claude-plugin/marketplace.json');
+
+test('both marketplaces expose only the standalone HumanLayer show-me plugin', () => {
+  for (const path of [MARKETPLACE_PATH, CLAUDE_MARKETPLACE_PATH]) {
+    const plugins = readJson(path).plugins.filter(
+      (plugin) => plugin.repository === 'https://github.com/humanlayer/skills',
+    );
+    assert.deepEqual(plugins.map((plugin) => plugin.name), ['show-me']);
+    assert.deepEqual(plugins[0].source, THIRD_PARTY_PLUGINS['show-me'].source);
+  }
+
+  const codexPlugin = readJson(MARKETPLACE_PATH).plugins.find((plugin) => plugin.name === 'show-me');
+  assert.equal(codexPlugin.skills, './skills/');
+});
 
 test('Claude Code marketplace mirrors the Codex plugin lineup', () => {
   const codexMarketplace = readJson(MARKETPLACE_PATH);
