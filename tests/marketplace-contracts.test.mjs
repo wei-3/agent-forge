@@ -1,5 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
+import { execSync } from 'node:child_process';
 import { existsSync, readFileSync, readdirSync, statSync } from 'node:fs';
 import { dirname, isAbsolute, join, relative, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -89,7 +90,7 @@ const THIRD_PARTY_PLUGINS = {
   postman: {
     source: {
       source: 'git-subdir',
-      url: 'https://github.com/Postman-Devrel/postman-claude-code-plugin.git',
+      url: 'https://github.com/postmanlabs/postman-plugin.git',
       path: './skills',
     },
     authentication: 'ON_INSTALL',
@@ -115,19 +116,6 @@ const THIRD_PARTY_PLUGINS = {
 const APPROVED_REMOTE_URLS = new Set(
   Object.values(THIRD_PARTY_PLUGINS).map((plugin) => plugin.source.url),
 );
-const POSTMAN_SKILLS = [
-  './agent-ready-apis',
-  './deploy-flow',
-  './generate-spec',
-  './get-flow-run',
-  './list-flows',
-  './postman-cli',
-  './postman-context',
-  './postman-knowledge',
-  './run-collection',
-  './send-request',
-  './trigger-flow',
-];
 
 function readJson(path) {
   return JSON.parse(readFileSync(path, 'utf8'));
@@ -572,13 +560,6 @@ test('marketplace plugins satisfy the repository contract', () => {
     undefined,
     'twg skill licensing must not be represented as the repository root license',
   );
-  assert.deepEqual(pluginsByName.get('postman').skills, POSTMAN_SKILLS);
-  assert.deepEqual(pluginsByName.get('postman').mcpServers, {
-    postman: {
-      type: 'http',
-      url: 'https://mcp.postman.com/mcp',
-    },
-  });
   assert.equal(pluginsByName.get('lark').skills, './skills/');
 
   const codegraphRoot = join(REPO_ROOT, 'plugins/codegraph');
@@ -700,6 +681,54 @@ test('local plugin skills satisfy the repository metadata contract', () => {
 });
 
 const CLAUDE_MARKETPLACE_PATH = join(REPO_ROOT, '.claude-plugin/marketplace.json');
+
+test('Postman uses skills-only direct MCP on Codex and native configuration on Claude', () => {
+  const codex = readJson(MARKETPLACE_PATH).plugins.find(({ name }) => name === 'postman');
+  const claude = readJson(CLAUDE_MARKETPLACE_PATH).plugins.find(({ name }) => name === 'postman');
+  assert.deepEqual(codex.source, THIRD_PARTY_PLUGINS.postman.source);
+  assert.deepEqual(codex.skills, [
+    './ai-readiness',
+    './api-discovery',
+    './api-documentation',
+    './api-engineer',
+    './api-mocking',
+    './api-monitoring',
+    './api-simulation',
+    './api-testing',
+    './bootstrap',
+    './ci-integration',
+    './collection-schema-v3',
+    './datasets',
+    './flows',
+    './performance-testing',
+    './postman-mcp-server',
+    './variables',
+    './webhook-testing',
+  ]);
+  assert.equal(codex.apps, undefined);
+  assert.deepEqual(codex.mcpServers, {
+    postman: { type: 'http', url: 'https://mcp.postman.com/mcp' },
+  });
+  assert.deepEqual(Object.keys(codex.hooks.hooks), ['SessionStart']);
+  const groups = codex.hooks.hooks.SessionStart;
+  assert.equal(groups.length, 1);
+  assert.equal(groups[0].matcher, 'startup|clear|compact');
+  assert.equal(groups[0].hooks.length, 1);
+  const hook = groups[0].hooks[0];
+  assert.equal(hook.type, 'command');
+  assert.match(hook.command, /^echo /u);
+  const output = execSync(hook.command, { encoding: 'utf8', timeout: 5000 });
+  assert.match(output, /non-trivial API engineering/u);
+  assert.match(output, /postman:api-engineer/u);
+  assert.match(output, /User instructions take precedence/u);
+  assert.deepEqual(claude.source, { source: 'github', repo: 'postmanlabs/postman-plugin' });
+  for (const plugin of [codex, claude]) {
+    assert.equal(plugin.repository, 'https://github.com/postmanlabs/postman-plugin');
+  }
+  for (const field of ['skills', 'mcpServers', 'hooks', 'apps']) {
+    assert.equal(claude[field], undefined, `Claude Postman must inherit native ${field}`);
+  }
+});
 
 test('both marketplaces expose only the standalone HumanLayer show-me plugin', () => {
   for (const path of [MARKETPLACE_PATH, CLAUDE_MARKETPLACE_PATH]) {
