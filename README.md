@@ -1,62 +1,24 @@
 # Agent Forge
 
-一个以 Codex 为第一支持目标、同时支持 Claude Code 的插件市场。自研插件使用本地目录，两端各带一份原生 manifest；第三方插件默认通过外链接入，不固定 commit SHA，重新安装时跟随上游默认分支最新版本。Humanizer 的 Codex 端是本地兼容包装，按记录的上游版本手动同步；Claude Code 端仍直接外链上游。
+Agent Forge 是一个优先支持 Codex、同时支持 Claude Code 的插件市场。每个插件都有中文指南，说明安装、配置和使用方法。
 
 ## 安装
 
-添加市场并安装需要的插件。两端各给了一个全量安装块，不必照着清单手打插件名。
+先添加市场，再按需安装插件。以下以 `humanizer` 为例；安装其他插件时，将 `humanizer` 替换为下方清单中的名称。
 
 ### Codex
 
 ```bash
 codex plugin marketplace add wei-3/agent-forge
-codex plugin add <插件名>@agent-forge
-```
-
-将 `<插件名>` 替换为下方清单中的名称。安装后新建一个 Codex 任务，让新任务加载插件。
-
-全部装齐：
-
-```bash
-codex plugin marketplace add wei-3/agent-forge
-codex plugin add mattpocock-skills@agent-forge
-codex plugin add obsidian@agent-forge
-codex plugin add twg@agent-forge
-codex plugin add context7@agent-forge
-codex plugin add superpowers@agent-forge
-codex plugin add postman@agent-forge
-codex plugin add ponytail@agent-forge
-codex plugin add codegraph@agent-forge
-codex plugin add worktree-links@agent-forge
-codex plugin add lark@agent-forge
-codex plugin add show-me@agent-forge
 codex plugin add humanizer@agent-forge
 ```
+
+安装后新建一个 Codex 任务以加载插件。
 
 ### Claude Code
 
 ```text
 /plugin marketplace add wei-3/agent-forge
-/plugin install <插件名>@agent-forge
-```
-
-将 `<插件名>` 替换为下方清单中的名称，装完执行 `/reload-plugins` 生效。
-
-全部装齐：
-
-```text
-/plugin marketplace add wei-3/agent-forge
-/plugin install mattpocock-skills@agent-forge
-/plugin install obsidian@agent-forge
-/plugin install twg@agent-forge
-/plugin install context7@agent-forge
-/plugin install superpowers@agent-forge
-/plugin install postman@agent-forge
-/plugin install ponytail@agent-forge
-/plugin install codegraph@agent-forge
-/plugin install worktree-links@agent-forge
-/plugin install lark@agent-forge
-/plugin install show-me@agent-forge
 /plugin install humanizer@agent-forge
 /reload-plugins
 ```
@@ -65,7 +27,7 @@ codex plugin add humanizer@agent-forge
 
 | 插件 | 何时用 |
 | --- | --- |
-| [`mattpocock-skills`](docs/plugins/mattpocock-skills.md) | 想按规划、TDD、调试、领域建模和代码评审等工程纪律推进开发时 |
+| [`mattpocock-skills`](docs/plugins/mattpocock-skills.md) | 按规划、TDD、调试、领域建模和代码评审流程推进开发时 |
 | [`obsidian`](docs/plugins/obsidian.md) | 编辑 Obsidian Markdown、Bases、Canvas，或抽取网页正文时 |
 | [`twg`](docs/plugins/twg.md) | 查询或操作 Jira、Confluence 等 Atlassian 工作数据时 |
 | [`context7`](docs/plugins/context7.md) | 查询版本相关的最新库文档和代码示例时 |
@@ -80,7 +42,9 @@ codex plugin add humanizer@agent-forge
 
 ## 外部依赖
 
-两端安装插件时都不会安装系统级 CLI。每个插件的独立中文指南列出了外部依赖、认证、首次配置、验证和更新步骤。市场负责 Skills 与 MCP 注册；不要再运行会复制 Skills 或重复写入 MCP 的上游安装步骤。
+安装插件不会自动安装系统级 CLI。请按各插件的中文指南完成依赖安装、认证和首次配置，验证与更新步骤也在指南中。
+
+市场已负责 Skills 与 MCP 注册，请跳过上游安装步骤中复制 Skills 或重复写入 MCP 的部分。
 
 不要把 API Key、Token 或其他凭据写入市场清单或仓库。
 
@@ -88,7 +52,7 @@ codex plugin add humanizer@agent-forge
 
 ### Codex
 
-如果 `agent-forge` 通过 Git 来源添加，先刷新市场快照，再重新安装插件。外链插件会在重新安装时取得上游默认分支的最新提交；Humanizer 的 Codex 兼容包随本市场更新：
+通过 Git 添加的 `agent-forge` 市场，需要先刷新市场快照，再重新安装插件。外链插件会取得上游默认分支的最新提交；Humanizer 的 Codex 兼容包随本市场更新：
 
 ```bash
 codex plugin marketplace upgrade agent-forge
@@ -101,9 +65,9 @@ codex plugin add <plugin-name>@agent-forge
 codex plugin add <plugin-name>@agent-forge
 ```
 
-更新后新建一个 Codex 任务，让新任务加载更新后的 Skills、MCP 和 hooks。
+更新后新建一个 Codex 任务，以加载更新后的 Skills、MCP 和 hooks。
 
-第三方上游更新不会自动进入已经安装的插件缓存。外链不固定 SHA 的代价是安装结果不可复现；上游推送、删除文件或调整目录都可能直接影响下一次安装。
+已安装的插件缓存不会自动同步上游更新。第三方外链不固定 commit SHA，因此不同时间安装的版本可能不同；上游推送、删除文件或调整目录都可能影响下一次安装。
 
 ### Claude Code
 
@@ -125,7 +89,11 @@ codex plugin add <插件名>@agent-forge
 
 ## 正式插件结构
 
-自己编写的正式插件放在 `plugins/<plugin-name>/`，两端各带一份原生 manifest。外部第三方插件默认不复制到这里；Humanizer 是 Codex 根目录 Skill 不兼容的特例，仅提供 Codex manifest，来源与同步步骤见其中文指南：
+自研插件放在 `plugins/<plugin-name>/`，为两端各提供一份原生 manifest。第三方插件默认通过外链接入，不复制到本地。
+
+Humanizer 因 Codex 不兼容上游根目录 Skill，使用本地兼容包，仅提供 Codex manifest，并按记录的上游版本手动同步；Claude Code 端仍直接外链上游。来源与同步步骤见其中文指南。
+
+自研插件的目录结构如下：
 
 ```text
 plugins/<plugin-name>/
@@ -146,28 +114,3 @@ plugins/<plugin-name>/
 ```
 
 插件目录名、两份市场清单里的 `name`、以及两份插件 manifest 的 `name` 必须一致。
-
-## 验证
-
-项目只使用 Node.js 内置测试工具，检查市场清单、本地插件 manifest、MCP 配置和
-Skill 元数据；不需要安装 Python 或 PyYAML：
-
-```bash
-node --test
-```
-
-安装了 Codex CLI 的环境还可运行实际加载器回归测试（不安装插件或修改配置）：
-
-```bash
-CODEX_RUNTIME_TESTS=1 node --test tests/codex-plugin-runtime.test.mjs
-```
-
-该测试验证 Humanizer 的 Skill 发现和网站字段；普通测试与 CI 默认跳过它。
-
-GitHub Actions 的 [CI 工作流](.github/workflows/ci.yml) 在 PR 创建或更新、推送到
-`main` 时自动运行，也支持合入默认分支后在 Actions 页面手动触发。
-工作流使用 GitHub 托管的标准 `ubuntu-latest` runner 和 Node.js 24，直接执行
-`node --test`，不需要安装项目依赖、注册自托管 runner 或配置 Secrets。
-每次运行最多 10 分钟，同一分支的新运行会取消旧运行。
-
-这是现有测试的 CI 检查，不包含 AI 代码审查。公开仓库的标准托管 runner 运行时间免费。

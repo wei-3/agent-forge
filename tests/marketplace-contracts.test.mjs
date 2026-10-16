@@ -629,6 +629,8 @@ test('marketplace plugins satisfy the repository contract', () => {
     'README installation must appear before the plugin list',
   );
   assert.match(readme, /codex plugin marketplace add wei-3\/agent-forge/u);
+  assert.match(readme, /codex plugin add humanizer@agent-forge/u);
+  assert.doesNotMatch(readme, /全部装齐/u);
   assert.match(readme, /^## 本地开发$/mu);
   assert.match(readme, /^\| 插件 \| 何时用 \|$/mu);
   assert.doesNotMatch(readme, /^\| 插件 \| 何时用 \| 来源 \|$/mu);
@@ -657,10 +659,6 @@ test('marketplace plugins satisfy the repository contract', () => {
     assert.ok(
       readme.includes(`[\`${name}\`](docs/plugins/${name}.md)`),
       `${name} is missing its README guide link`,
-    );
-    assert.ok(
-      readme.includes(`codex plugin add ${name}@agent-forge`),
-      `${name} is missing from the full installation block`,
     );
   }
   assert.doesNotMatch(
@@ -795,14 +793,11 @@ test('Claude Code marketplace mirrors the Codex plugin lineup', () => {
   const codexByName = new Map(codexMarketplace.plugins.map((plugin) => [plugin.name, plugin]));
   const readme = readFileSync(README_PATH, 'utf8');
   assert.match(readme, /\/plugin marketplace add wei-3\/agent-forge/u);
+  assert.match(readme, /\/plugin install humanizer@agent-forge/u);
   assert.match(readme, /\/reload-plugins/u);
 
   for (const plugin of claudeMarketplace.plugins) {
     assert.ok(isNonEmptyString(plugin.name), 'plugin name is required');
-    assert.ok(
-      readme.includes(`/plugin install ${plugin.name}@agent-forge`),
-      `${plugin.name} is missing from the Claude Code full installation block`,
-    );
     assert.ok(isNonEmptyString(plugin.description), `${plugin.name} description is required`);
     assert.ok(isNonEmptyString(plugin.category), `${plugin.name} category is required`);
     const codexPlugin = codexByName.get(plugin.name);
