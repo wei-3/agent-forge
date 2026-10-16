@@ -1,0 +1,25 @@
+{
+  "name": "humanizer",
+  "version": "3.1.0-agent-forge.1",
+  "description": "Codex compatibility packaging of Humanizer 3.1.0; rewrite AI-sounding prose while preserving meaning.",
+  "author": {
+    "name": "blader"
+  },
+  "homepage": "https://github.com/blader/humanizer",
+  "repository": "https://github.com/blader/humanizer",
+  "license": "MIT",
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Humanizer (Codex compatibility)",
+    "shortDescription": "Humanizer packaged for Codex.",
+    "longDescription": "Agent Forge compatibility packaging of upstream Humanizer. The upstream rules are preserved and updates are synchronized manually.",
+    "developerName": "blader / Agent Forge packaging",
+    "category": "Productivity",
+    "capabilities": [
+      "Read",
+      "Write"
+    ],
+    "websiteURL": "https://github.com/blader/humanizer",
+    "defaultPrompt": "Use $humanizer to rewrite this text without changing its facts."
+  }
+}
