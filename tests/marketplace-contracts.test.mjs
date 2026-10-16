@@ -37,6 +37,14 @@ const LOCAL_MANIFEST_FIELDS = new Set([
   'keywords',
 ]);
 const THIRD_PARTY_PLUGINS = {
+  humanizer: {
+    source: {
+      source: 'url',
+      url: 'https://github.com/blader/humanizer.git',
+    },
+    authentication: 'ON_INSTALL',
+    category: 'Productivity',
+  },
   'show-me': {
     source: {
       source: 'git-subdir',
@@ -681,6 +689,16 @@ test('local plugin skills satisfy the repository metadata contract', () => {
 });
 
 const CLAUDE_MARKETPLACE_PATH = join(REPO_ROOT, '.claude-plugin/marketplace.json');
+
+test('humanizer exposes its root skill on Codex and inherits the native Claude manifest', () => {
+  const codex = readJson(MARKETPLACE_PATH).plugins.find(({ name }) => name === 'humanizer');
+  const claude = readJson(CLAUDE_MARKETPLACE_PATH).plugins.find(({ name }) => name === 'humanizer');
+  assert.ok(codex, 'humanizer is missing from Codex');
+  assert.ok(claude, 'humanizer is missing from Claude');
+  assert.deepEqual(codex.skills, ['./']);
+  assert.deepEqual(claude.source, { source: 'github', repo: 'blader/humanizer' });
+  assert.equal(claude.skills, undefined);
+});
 
 test('Postman uses skills-only direct MCP on Codex and native configuration on Claude', () => {
   const codex = readJson(MARKETPLACE_PATH).plugins.find(({ name }) => name === 'postman');
