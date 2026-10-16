@@ -2,7 +2,7 @@
 
 **来源**：[HumanLayer Skills](https://github.com/humanlayer/skills)，第三方外链接入。
 
-两端均只加载上游 `plugins/show-me` 子目录，提供一个同名技能，不包含 HumanLayer 的其他插件。技能根据当前话题选择伪代码、调用树、目录树、Mermaid、结构 diff 或独立 HTML 来解释问题。
+Claude Code 加载上游 `plugins/show-me`，Codex 加载其 `skills` 子目录并由市场声明技能与网站信息，提供一个同名技能，不包含 HumanLayer 的其他插件。技能根据当前话题选择伪代码、调用树、目录树、Mermaid、结构 diff 或独立 HTML 来解释问题。
 
 ## 安装
 
@@ -15,7 +15,7 @@ codex plugin add show-me@agent-forge
 codex plugin list --marketplace agent-forge
 ```
 
-安装后新建一个 Codex 任务，让新任务加载技能。
+已有 Codex 安装需重新执行安装命令，替换旧 manifest 缓存，再新建任务。Codex 端版本可能显示为 `local`，因为 Skills 子目录没有上游插件 manifest。
 
 Claude Code：
 

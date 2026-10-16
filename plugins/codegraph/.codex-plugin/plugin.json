@@ -9,6 +9,7 @@
   "repository": "https://github.com/colbymchenry/codegraph",
   "skills": "./skills/",
   "interface": {
+    "websiteURL": "https://colbymchenry.github.io/codegraph/",
     "displayName": "CodeGraph",
     "shortDescription": "Explore indexed repositories with CodeGraph.",
     "longDescription": "Registers the external CodeGraph CLI as a local MCP server and guides indexed repository exploration.",

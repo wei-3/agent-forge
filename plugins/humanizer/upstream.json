@@ -1,0 +1,10 @@
+{
+  "repository": "https://github.com/blader/humanizer",
+  "version": "3.1.0",
+  "commit": "225a6f39ac85f76ee48dbad772ea4abe4ed6c9d8",
+  "bodySha256": "86588ff3105fb588205cfecafb732111febc4eba51861e3ffda84d414311e9a0",
+  "files": {
+    "LICENSE": "4ac4810254ab36d45419141aeb8e69bf50652cfafe5b2dab947d06d44e5cbf96",
+    "skills/humanizer/agents/openai.yaml": "9d87ff83149a04f86a372948b8ee35fa249de20923867bbc2a49304290aad736"
+  }
+}

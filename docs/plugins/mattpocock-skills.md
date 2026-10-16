@@ -16,7 +16,9 @@ codex plugin list --marketplace agent-forge
 Claude Code 用户改用 `/plugin install mattpocock-skills@agent-forge`（先执行一次
 `/plugin marketplace add wei-3/agent-forge`）。
 
-安装后新建一个 Codex 任务，让新任务加载 Skills。
+Codex 直接引用上游 `skills` 子目录，由市场声明网站和正式技能路径；保留当前上游 manifest 的 27 个技能，不包含 `misc` 或 `in-progress`。Claude Code 继续使用上游原生 manifest。
+
+已有 Codex 安装需重新执行安装命令，替换旧 manifest 缓存，再新建任务。Codex 端版本可能显示为 `local`；上游增删正式技能时，维护者需同步市场中的路径清单。
 
 ## 首次配置项目
 

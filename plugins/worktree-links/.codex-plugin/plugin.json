@@ -10,6 +10,7 @@
   "keywords": ["git", "worktree", "symlink", "codex"],
   "skills": "./skills/",
   "interface": {
+    "websiteURL": "https://github.com/wei-3/agent-forge/tree/main/plugins/worktree-links",
     "displayName": "Worktree Links",
     "shortDescription": "Share local files across git worktrees.",
     "longDescription": "Configures a repository-local allowlist of ignored ordinary files and safely creates absolute symlinks in linked worktrees.",

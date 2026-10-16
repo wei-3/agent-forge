@@ -1,4 +1,5 @@
 import test from 'node:test';
+import { createHash } from 'node:crypto';
 import assert from 'node:assert/strict';
 import { execSync } from 'node:child_process';
 import { existsSync, readFileSync, readdirSync, statSync } from 'node:fs';
@@ -37,27 +38,20 @@ const LOCAL_MANIFEST_FIELDS = new Set([
   'keywords',
 ]);
 const THIRD_PARTY_PLUGINS = {
-  humanizer: {
-    source: {
-      source: 'url',
-      url: 'https://github.com/blader/humanizer.git',
-    },
-    authentication: 'ON_INSTALL',
-    category: 'Productivity',
-  },
   'show-me': {
     source: {
       source: 'git-subdir',
       url: 'https://github.com/humanlayer/skills.git',
-      path: './plugins/show-me',
+      path: './plugins/show-me/skills',
     },
     authentication: 'ON_INSTALL',
     category: 'Productivity',
   },
   'mattpocock-skills': {
     source: {
-      source: 'url',
+      source: 'git-subdir',
       url: 'https://github.com/mattpocock/skills.git',
+      path: './skills',
     },
     authentication: 'ON_INSTALL',
     category: 'Developer Tools',
@@ -535,6 +529,7 @@ test('marketplace plugins satisfy the repository contract', () => {
     assert.ok(isNonEmptyString(manifest.description), `${plugin.name} description is required`);
     assert.ok(isNonEmptyString(manifest.author?.name), `${plugin.name} author.name is required`);
     assert.ok(manifest.interface && typeof manifest.interface === 'object');
+    assert.equal(manifest.interface.websiteURL, manifest.homepage);
     for (const field of [
       'displayName',
       'shortDescription',
@@ -690,14 +685,29 @@ test('local plugin skills satisfy the repository metadata contract', () => {
 
 const CLAUDE_MARKETPLACE_PATH = join(REPO_ROOT, '.claude-plugin/marketplace.json');
 
-test('humanizer exposes its root skill on Codex and inherits the native Claude manifest', () => {
+test('humanizer uses a local Codex compatibility package and the upstream Claude plugin', () => {
   const codex = readJson(MARKETPLACE_PATH).plugins.find(({ name }) => name === 'humanizer');
   const claude = readJson(CLAUDE_MARKETPLACE_PATH).plugins.find(({ name }) => name === 'humanizer');
-  assert.ok(codex, 'humanizer is missing from Codex');
-  assert.ok(claude, 'humanizer is missing from Claude');
-  assert.deepEqual(codex.skills, ['./']);
+  assert.deepEqual(codex?.source, { source: 'local', path: './plugins/humanizer' });
   assert.deepEqual(claude.source, { source: 'github', repo: 'blader/humanizer' });
   assert.equal(claude.skills, undefined);
+  assert.equal(claude.strict, undefined);
+  const root = join(REPO_ROOT, 'plugins/humanizer');
+  const manifest = readJson(join(root, '.codex-plugin/plugin.json'));
+  assert.equal(manifest.skills, './skills/');
+  assert.equal(manifest.license, 'MIT');
+  assert.equal(manifest.interface.websiteURL, 'https://github.com/blader/humanizer');
+  const upstream = readJson(join(root, 'upstream.json'));
+  assert.match(upstream.commit, /^[a-f0-9]{40}$/u);
+  assert.equal(upstream.repository, manifest.repository);
+  assert.ok(manifest.version.startsWith(`${upstream.version}-agent-forge.`));
+  const skill = readFileSync(join(root, 'skills/humanizer/SKILL.md'), 'utf8');
+  const body = skill.replace(/^---\n[\s\S]*?\n---\n/u, '');
+  assert.equal(createHash('sha256').update(body).digest('hex'), upstream.bodySha256);
+  for (const [path, hash] of Object.entries(upstream.files)) {
+    assert.equal(createHash('sha256').update(readFileSync(join(root, path))).digest('hex'), hash);
+  }
+  assert.match(readFileSync(join(root, 'LICENSE'), 'utf8'), /Copyright \(c\) 2025 Siqi Chen/u);
 });
 
 test('Postman uses skills-only direct MCP on Codex and native configuration on Claude', () => {
@@ -754,11 +764,14 @@ test('both marketplaces expose only the standalone HumanLayer show-me plugin', (
       (plugin) => plugin.repository === 'https://github.com/humanlayer/skills',
     );
     assert.deepEqual(plugins.map((plugin) => plugin.name), ['show-me']);
-    assert.deepEqual(plugins[0].source, THIRD_PARTY_PLUGINS['show-me'].source);
+    assert.deepEqual(plugins[0].source, {
+      ...THIRD_PARTY_PLUGINS['show-me'].source,
+      path: path === MARKETPLACE_PATH ? './plugins/show-me/skills' : './plugins/show-me',
+    });
   }
 
   const codexPlugin = readJson(MARKETPLACE_PATH).plugins.find((plugin) => plugin.name === 'show-me');
-  assert.equal(codexPlugin.skills, './skills/');
+  assert.deepEqual(codexPlugin.skills, ['./show-me']);
 });
 
 test('Claude Code marketplace mirrors the Codex plugin lineup', () => {
@@ -776,7 +789,7 @@ test('Claude Code marketplace mirrors the Codex plugin lineup', () => {
   assert.deepEqual(
     [...claudeNames].sort(),
     codexNames,
-    'Claude Code marketplace must offer exactly the same plugins as the Codex marketplace',
+    'both marketplaces must offer the same plugin names',
   );
 
   const codexByName = new Map(codexMarketplace.plugins.map((plugin) => [plugin.name, plugin]));
