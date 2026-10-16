@@ -1,6 +1,6 @@
 # TWG 安装与使用
 
-**来源**：[Atlassian TWG CLI](https://github.com/atlassian/twg-cli)，第三方外链接入。
+**来源**：[Atlassian TWG CLI](https://github.com/atlassian/twg-cli)，从第三方上游仓库加载。
 
 这个插件提供 Atlassian Teamwork Graph Skills。市场只管理 Skills，TWG CLI 和 OAuth 登录需要单独完成。
 

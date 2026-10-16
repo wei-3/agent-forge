@@ -1,6 +1,6 @@
 # Superpowers 安装与使用
 
-**来源**：[Superpowers](https://github.com/obra/superpowers)，第三方外链接入。
+**来源**：[Superpowers](https://github.com/obra/superpowers)，从第三方上游仓库加载。
 
 这个插件提供 brainstorming、TDD、系统化调试、计划执行、子代理协作和代码审查等开发流程 Skills。它没有 MCP、账号认证或必需的外部 CLI。
 

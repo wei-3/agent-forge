@@ -1,8 +1,10 @@
 # Show Me 安装与使用
 
-**来源**：[HumanLayer Skills](https://github.com/humanlayer/skills)，第三方外链接入。
+**来源**：[HumanLayer Skills](https://github.com/humanlayer/skills)，从第三方上游仓库加载。
 
-Claude Code 加载上游 `plugins/show-me`，Codex 加载其 `skills` 子目录并由市场声明技能与网站信息，提供一个同名技能，不包含 HumanLayer 的其他插件。技能根据当前话题选择伪代码、调用树、目录树、Mermaid、结构 diff 或独立 HTML 来解释问题。
+Show Me 根据当前话题选择伪代码、调用树、目录树、Mermaid、结构 diff 或独立 HTML 来解释问题。
+
+插件只提供 Show Me 同名技能，不包含 HumanLayer 的其他插件。Claude Code 加载上游 `plugins/show-me`；Codex 加载其 `skills` 子目录，由市场声明技能与网站信息。
 
 ## 安装
 
@@ -15,7 +17,7 @@ codex plugin add show-me@agent-forge
 codex plugin list --marketplace agent-forge
 ```
 
-已有 Codex 安装需重新执行安装命令，替换旧 manifest 缓存，再新建任务。Codex 端版本可能显示为 `local`，因为 Skills 子目录没有上游插件 manifest。
+已安装该插件的 Codex 用户需重新执行安装命令，替换旧 manifest 缓存，再新建任务。Codex 端版本可能显示为 `local`，因为 Skills 子目录没有上游插件 manifest。
 
 Claude Code：
 
