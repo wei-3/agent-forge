@@ -1,8 +1,8 @@
 # Lark / 飞书安装与使用
 
-**来源**：[Lark CLI](https://github.com/larksuite/cli)，第三方外链接入。
+**来源**：[Lark CLI](https://github.com/larksuite/cli)，从第三方上游仓库加载。
 
-这个插件从 Lark CLI 上游加载飞书 Skills。市场管理 Skills；`lark-cli`、应用配置和用户授权需要单独完成。
+这个插件从 Lark CLI 上游加载飞书 Skills。市场管理 Skills；用户需要另行安装 `lark-cli`，配置应用并完成授权。
 
 ## 安装插件与 CLI
 
@@ -39,7 +39,7 @@ lark-cli auth status --verify
 npm install -g @larksuite/cli@1.0.94
 ```
 
-插件源码不固定 SHA；重新安装时从上游默认分支取得最新提交。更新方式见 [README：更新已安装插件](../../README.md#更新已安装插件)。CLI 发布说明核对基线为 1.0.94；升级前先审核新的 Lark 发布并更新这里的精确版本。不要运行 `lark-cli update` 或
+插件源码不固定 SHA；重新安装时从上游默认分支取得最新提交。更新方式见 [README：更新已安装插件](../../README.md#更新已安装插件)。当前已核对 CLI 1.0.94 的发布说明；升级前先审核新版本的发布说明，再更新这里的精确版本。不要运行 `lark-cli update` 或
 `npx skills add larksuite/cli -y -g`；它们会产生第二份 Skills。
 
 从 1.0.91 升级时注意：[上游发布说明](https://github.com/larksuite/cli/blob/main/CHANGELOG.md)中，1.0.93 移除了旧版 Sheets 命令接口；1.0.94 从日历事件输出中移除了 `app_link`，应使用分享链接。依赖这些命令或字段的脚本需要同步调整。

@@ -1,8 +1,8 @@
 # Ponytail 安装与使用
 
-**来源**：[Ponytail](https://github.com/DietrichGebert/ponytail)，第三方外链接入。
+**来源**：[Ponytail](https://github.com/DietrichGebert/ponytail)，从第三方上游仓库加载。
 
-Ponytail 提供偏向 YAGNI、最小正确实现和反过度设计的 Skills，并通过 Codex lifecycle hooks 持续注入工作方式。
+Ponytail 的 Skills 遵循 YAGNI：只实现当前需要的功能，在保证正确性的前提下减少代码和设计复杂度。插件通过 Codex 生命周期 hooks 持续加载这些开发规则。
 
 ## 前置检查与安装
 
@@ -19,10 +19,10 @@ Claude Code 用户改用 `/plugin install ponytail@agent-forge`（先执行一�
 安装后：
 
 1. Codex Desktop 完全重启；CLI 则重新启动 `codex`。
-2. 输入 `/hooks`，逐项审核并信任该插件列出的 lifecycle hooks。
+2. 输入 `/hooks`，逐项审核并信任该插件列出的生命周期 hooks。
 3. 新建任务，使用 `@ponytail-help` 或 `@ponytail-review` 验证。
 
-没有 Node.js 时 Skills 仍可被调用，但自动常驻激活不会工作。使用 nvm 或 Nix 时，尤其要确认非交互 shell 也能找到 `node`。
+没有 Node.js 时 Skills 仍可被调用，但无法自动保持激活。使用 nvm 或 Nix 时，尤其要确认非交互 shell 也能找到 `node`。
 
 ## 更新
 

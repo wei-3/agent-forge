@@ -1,8 +1,8 @@
 # Humanizer 安装与使用
 
-**来源**：[Humanizer](https://github.com/blader/humanizer)，MIT 许可证。Codex 使用 Agent Forge 的本地兼容包装；Claude Code 继续直接外链上游原生插件。
+**来源**：[Humanizer](https://github.com/blader/humanizer)，MIT 许可证。Codex 使用 Agent Forge 的本地兼容包装；Claude Code 直接加载上游原生插件。
 
-Humanizer 润色 AI 风格文本，减少套话和机械句式，同时保留原意与事实。它面向人类读者改善表达，不保证绕过 AI 检测器。
+Humanizer 润色 AI 风格文本，减少套话和机械句式，同时保留原意与事实。它用于改善阅读体验，不保证绕过 AI 检测器。
 
 ## 安装与验证
 
@@ -14,7 +14,7 @@ Codex：
 codex plugin add humanizer@agent-forge
 ```
 
-以前安装过上游外链版本的用户也需重新安装，替换旧缓存。安装后新建任务，在技能选择器选择 `humanizer:humanizer`，或输入 `$humanizer` 并选择该技能，再提供待润色文本。插件详情应列出 Humanizer Skill，网站应指向上游仓库。
+以前直接安装上游版本的用户也需重新安装，以替换旧缓存。安装后新建任务，在技能选择器选择 `humanizer:humanizer`，或输入 `$humanizer` 并选择该技能，再提供待润色文本。插件详情应列出 Humanizer Skill，网站应指向上游仓库。
 
 Claude Code：
 
@@ -32,11 +32,11 @@ Codex CLI 0.153.4 实测忽略上游 manifest 中的 `skills: ["./"]`：能安�
 
 - 上游版本：`3.1.0`；兼容包版本：`3.1.0-agent-forge.1`。
 - 上游提交：[225a6f39ac85f76ee48dbad772ea4abe4ed6c9d8](https://github.com/blader/humanizer/commit/225a6f39ac85f76ee48dbad772ea4abe4ed6c9d8)。
-- 规则正文保持上游原样；frontmatter 的多行 description 改为等价带转义的字符串，metadata 改为等价行内映射，以符合本仓库的平面元数据校验。
+- 规则正文保持上游原样。为通过本仓库的平面元数据校验，frontmatter 中的多行 description 改用带转义的字符串，metadata 改用行内映射，内容含义不变。
 - `agents/openai.yaml` 与 MIT `LICENSE` 原样保留；许可证版权归 Siqi Chen。
 - [upstream.json](../../plugins/humanizer/upstream.json) 记录上游来源、版本、提交、正文及附件 SHA-256，测试防止意外修改。
 
-这是包装兼容层，不是上游官方 Codex 插件，也不自动追踪上游更新。
+该兼容包由 Agent Forge 维护，不属于上游官方 Codex 插件，也不自动追踪上游更新。
 
 ## 更新与手动同步
 

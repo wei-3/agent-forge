@@ -2,7 +2,7 @@
 
 **来源**：[CodeGraph](https://github.com/colbymchenry/codegraph)，第三方能力；Agent Forge 仅维护本地适配层。
 
-这个插件是薄适配层：市场负责 Skill 和 `codegraph serve --mcp` 注册，外部 CodeGraph CLI 与每个项目的 `.codegraph/` 索引由用户管理。
+市场提供 Skill 并注册 `codegraph serve --mcp`；用户自行管理 CodeGraph CLI 和各项目的 `.codegraph/` 索引。
 
 ## 安装插件
 
@@ -23,7 +23,7 @@ npm install -g @colbymchenry/codegraph
 codegraph --version
 ```
 
-不要运行裸 `codegraph` 或 `codegraph install` 进入 agent installer；它会另行写入全局 Codex MCP 配置和 `AGENTS.md`，与市场插件重复。
+不要直接运行 `codegraph` 或 `codegraph install` 进入 agent installer；它会另行写入全局 Codex MCP 配置和 `AGENTS.md`，与市场插件重复。
 
 如果旧版本曾通过 agent installer 注册过 MCP，先执行
 `codegraph uninstall --target codex --keep-cli`，在交互中选择原来的安装位置，只移除旧 Codex agent 配置，再安装市场插件；不要执行
@@ -31,7 +31,7 @@ codegraph --version
 
 ## 每个项目首次初始化
 
-在项目根目录显式执行一次：
+在项目根目录执行一次：
 
 ```bash
 codegraph init

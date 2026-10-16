@@ -1,6 +1,6 @@
 # Obsidian 安装与使用
 
-**来源**：[Obsidian Skills](https://github.com/kepano/obsidian-skills)，第三方外链接入。
+**来源**：[Obsidian Skills](https://github.com/kepano/obsidian-skills)，从第三方上游仓库加载。
 
 这个插件提供 Obsidian Markdown、Bases、JSON Canvas、Obsidian CLI 和网页正文提取 Skills。直接处理 Markdown、Base 和 Canvas 文件时不需要外部 CLI。
 
