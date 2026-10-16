@@ -10,6 +10,16 @@
   },
   "plugins": [
     {
+      "name": "humanizer",
+      "description": "Rewrite AI-sounding text so it reads like the writer without changing what it says.",
+      "source": { "source": "github", "repo": "blader/humanizer" },
+      "author": { "name": "blader" },
+      "repository": "https://github.com/blader/humanizer",
+      "homepage": "https://github.com/blader/humanizer",
+      "license": "MIT",
+      "category": "Productivity"
+    },
+    {
       "name": "show-me",
       "description": "Explain the current topic with concise diagrams, code-shape sketches, and focused HTML artifacts.",
       "source": {

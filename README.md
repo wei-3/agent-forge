@@ -30,6 +30,7 @@ codex plugin add codegraph@agent-forge
 codex plugin add worktree-links@agent-forge
 codex plugin add lark@agent-forge
 codex plugin add show-me@agent-forge
+codex plugin add humanizer@agent-forge
 ```
 
 ### Claude Code
@@ -56,6 +57,7 @@ codex plugin add show-me@agent-forge
 /plugin install worktree-links@agent-forge
 /plugin install lark@agent-forge
 /plugin install show-me@agent-forge
+/plugin install humanizer@agent-forge
 /reload-plugins
 ```
 
@@ -74,6 +76,7 @@ codex plugin add show-me@agent-forge
 | [`worktree-links`](docs/plugins/worktree-links.md) | 在多个 git worktree 间共享主工作区的 gitignored 本地文件时 |
 | [`lark`](docs/plugins/lark.md) | 操作飞书文档、消息、日历、多维表格、邮箱、任务和会议时 |
 | [`show-me`](docs/plugins/show-me.md) | 用图解、代码结构草图或 HTML 解释当前话题时 |
+| [`humanizer`](docs/plugins/humanizer.md) | 润色 AI 风格文本，在保留事实和原意的前提下让表达更自然时 |
 
 ## 外部依赖
 
