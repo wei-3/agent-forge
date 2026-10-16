@@ -79,10 +79,10 @@
     },
     {
       "name": "postman",
-      "description": "Eleven Postman API and Flows workflow skills plus the Full Postman MCP server.",
-      "source": { "source": "github", "repo": "Postman-Devrel/postman-claude-code-plugin" },
+      "description": "Official Postman API workflows with native skills, hooks, and MCP configuration.",
+      "source": { "source": "github", "repo": "postmanlabs/postman-plugin" },
       "author": { "name": "Postman" },
-      "repository": "https://github.com/Postman-Devrel/postman-claude-code-plugin",
+      "repository": "https://github.com/postmanlabs/postman-plugin",
       "homepage": "https://learning.postman.com/docs/developer/postman-mcp-server/",
       "license": "Apache-2.0",
       "category": "Developer Tools"

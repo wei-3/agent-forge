@@ -123,30 +123,41 @@
     },
     {
       "name": "postman",
-      "description": "Eleven Postman API and Flows workflow skills plus the Full Postman MCP server.",
+      "description": "Postman API workflow skills with direct MCP access and a short inline startup hook.",
       "source": {
         "source": "git-subdir",
-        "url": "https://github.com/Postman-Devrel/postman-claude-code-plugin.git",
+        "url": "https://github.com/postmanlabs/postman-plugin.git",
         "path": "./skills"
       },
       "author": {
         "name": "Postman"
       },
-      "repository": "https://github.com/Postman-Devrel/postman-claude-code-plugin",
+      "repository": "https://github.com/postmanlabs/postman-plugin",
       "homepage": "https://learning.postman.com/docs/developer/postman-mcp-server/",
       "license": "Apache-2.0",
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Developer Tools",
       "skills": [
-        "./agent-ready-apis",
-        "./deploy-flow",
-        "./generate-spec",
-        "./get-flow-run",
-        "./list-flows",
-        "./postman-cli",
-        "./postman-context",
-        "./postman-knowledge",
-        "./run-collection",
-        "./send-request",
-        "./trigger-flow"
+        "./ai-readiness",
+        "./api-discovery",
+        "./api-documentation",
+        "./api-engineer",
+        "./api-mocking",
+        "./api-monitoring",
+        "./api-simulation",
+        "./api-testing",
+        "./bootstrap",
+        "./ci-integration",
+        "./collection-schema-v3",
+        "./datasets",
+        "./flows",
+        "./performance-testing",
+        "./postman-mcp-server",
+        "./variables",
+        "./webhook-testing"
       ],
       "mcpServers": {
         "postman": {
@@ -154,11 +165,21 @@
           "url": "https://mcp.postman.com/mcp"
         }
       },
-      "policy": {
-        "installation": "AVAILABLE",
-        "authentication": "ON_INSTALL"
-      },
-      "category": "Developer Tools"
+      "hooks": {
+        "hooks": {
+          "SessionStart": [
+            {
+              "matcher": "startup|clear|compact",
+              "hooks": [
+                {
+                  "type": "command",
+                  "command": "echo \"For non-trivial API engineering, load postman:api-engineer first; for a specific task, load the matching Postman skill directly. User instructions take precedence.\""
+                }
+              ]
+            }
+          ]
+        }
+      }
     },
     {
       "name": "ponytail",
