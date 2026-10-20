@@ -5,6 +5,26 @@
   },
   "plugins": [
     {
+      "name": "agent-browser",
+      "description": "Browser automation for web testing, form filling, screenshots, and data extraction; requires the separately installed agent-browser CLI.",
+      "source": {
+        "source": "url",
+        "url": "https://github.com/vercel-labs/agent-browser.git"
+      },
+      "author": {
+        "name": "Vercel"
+      },
+      "repository": "https://github.com/vercel-labs/agent-browser",
+      "homepage": "https://agent-browser.dev",
+      "license": "Apache-2.0",
+      "skills": "./skills/",
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Developer Tools"
+    },
+    {
       "name": "humanizer",
       "source": {
         "source": "local",
