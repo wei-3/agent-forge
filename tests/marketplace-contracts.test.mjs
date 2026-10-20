@@ -38,6 +38,14 @@ const LOCAL_MANIFEST_FIELDS = new Set([
   'keywords',
 ]);
 const THIRD_PARTY_PLUGINS = {
+  'agent-browser': {
+    source: {
+      source: 'url',
+      url: 'https://github.com/vercel-labs/agent-browser.git',
+    },
+    authentication: 'ON_INSTALL',
+    category: 'Developer Tools',
+  },
   'show-me': {
     source: {
       source: 'git-subdir',
@@ -682,6 +690,30 @@ test('local plugin skills satisfy the repository metadata contract', () => {
 });
 
 const CLAUDE_MARKETPLACE_PATH = join(REPO_ROOT, '.claude-plugin/marketplace.json');
+
+test('agent-browser loads upstream skills on both hosts without bundling the CLI', () => {
+  const codex = readJson(MARKETPLACE_PATH).plugins.find(({ name }) => name === 'agent-browser');
+  const claude = readJson(CLAUDE_MARKETPLACE_PATH).plugins.find(({ name }) => name === 'agent-browser');
+  assert.ok(codex, 'agent-browser is missing from the Codex marketplace');
+  assert.ok(claude, 'agent-browser is missing from the Claude marketplace');
+  assert.deepEqual(codex.source, THIRD_PARTY_PLUGINS['agent-browser'].source);
+  assert.equal(codex.skills, './skills/');
+  assert.deepEqual(claude.source, { source: 'github', repo: 'vercel-labs/agent-browser' });
+  assert.equal(claude.strict, false);
+  assert.deepEqual(claude.skills, ['./skills/agent-browser']);
+  for (const plugin of [codex, claude]) {
+    assert.equal(plugin.repository, 'https://github.com/vercel-labs/agent-browser');
+    assert.equal(plugin.license, 'Apache-2.0');
+    assert.equal(plugin.mcpServers, undefined);
+    assert.equal(plugin.hooks, undefined);
+  }
+
+  const guide = readFileSync(join(REPO_ROOT, 'docs/plugins/agent-browser.md'), 'utf8');
+  assert.match(guide, /npm install -g agent-browser/u);
+  assert.match(guide, /agent-browser install/u);
+  assert.match(guide, /agent-browser skills get core/u);
+  assert.match(guide, /agent-browser --session agent-forge-check close/u);
+});
 
 test('humanizer uses a local Codex compatibility package and the upstream Claude plugin', () => {
   const codex = readJson(MARKETPLACE_PATH).plugins.find(({ name }) => name === 'humanizer');

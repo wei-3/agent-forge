@@ -10,6 +10,18 @@
   },
   "plugins": [
     {
+      "name": "agent-browser",
+      "description": "Browser automation for web testing, form filling, screenshots, and data extraction; requires the separately installed agent-browser CLI.",
+      "source": { "source": "github", "repo": "vercel-labs/agent-browser" },
+      "strict": false,
+      "skills": ["./skills/agent-browser"],
+      "author": { "name": "Vercel" },
+      "repository": "https://github.com/vercel-labs/agent-browser",
+      "homepage": "https://agent-browser.dev",
+      "license": "Apache-2.0",
+      "category": "Developer Tools"
+    },
+    {
       "name": "humanizer",
       "description": "Rewrite AI-sounding text so it reads like the writer without changing what it says.",
       "source": { "source": "github", "repo": "blader/humanizer" },
