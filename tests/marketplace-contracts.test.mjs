@@ -753,6 +753,7 @@ test('Postman uses skills-only direct MCP on Codex and native configuration on C
     './api-monitoring',
     './api-simulation',
     './api-testing',
+    './application-testing',
     './bootstrap',
     './ci-integration',
     './collection-schema-v3',
