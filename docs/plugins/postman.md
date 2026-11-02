@@ -4,8 +4,10 @@
 
 安装入口为 `postman@agent-forge`，两端使用同一官方仓库，但接入方式不同：
 
-- Codex 只安装上游 `skills` 子目录，市场显式列出 17 个技能，单独注册直接 HTTP MCP 和简短内联 hook；不引入上游原生 manifest 或 `.app.json`，无需连接 ChatGPT Postman App。
+- Codex 只安装上游 `skills` 子目录，市场显式列出 18 个技能，单独注册直接 HTTP MCP 和简短内联 hook；不引入上游原生 manifest 或 `.app.json`，无需连接 ChatGPT Postman App。
 - Claude Code 仍从仓库根目录加载官方原生插件，使用其技能、MCP 和 hooks。
+
+其中 `application-testing` 用于运行已有 Playwright 测试、捕获网络流量并对照 Postman Collection 契约检查；需要项目已配置 Playwright 端到端测试。
 
 ## 安装与认证
 
@@ -56,4 +58,4 @@ postman --help
 
 插件源码不固定 SHA；重新安装时从上游默认分支取得最新提交。更新方式见 [README：更新已安装插件](../../README.md#更新已安装插件)。已安装缓存不会因上游提交而即时更新。
 
-Codex 的 17 项技能路径和内联 hook 由本市场维护；上游技能发生变化后，需要等待市场同步。Claude Code 的技能和 hooks 随官方整包更新。
+Codex 的 18 项技能路径和内联 hook 由本市场维护；上游技能发生变化后，需要等待市场同步。Claude Code 的技能和 hooks 随官方整包更新。
