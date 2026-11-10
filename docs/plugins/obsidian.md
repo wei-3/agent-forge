@@ -33,10 +33,12 @@ CLI 会连接正在运行的 Obsidian；若未运行，首条命令会启动应�
 仅使用 `defuddle` Skill 时，需要 Node.js，并安装：
 
 ```bash
-npm install -g defuddle@0.19.2
+npm install -g defuddle@0.19.6
 defuddle --help
 ```
 
 ## 更新
 
-插件源码不固定 SHA；重新安装时从上游默认分支取得最新提交。更新方式见 [README：更新已安装插件](../../README.md#更新已安装插件)。Obsidian 桌面版通过其官方渠道更新；`defuddle` 的当前审核基线为 0.19.2，升级前先审核新版本并更新这里的精确版本。
+插件源码不固定 SHA；重新安装时从上游默认分支取得最新提交。更新方式见 [README：更新已安装插件](../../README.md#更新已安装插件)。Obsidian 桌面版通过其官方渠道更新。
+
+更新 `defuddle` 时重跑上一节的安装命令。0.19.6 修复了 Markdown 输出中保留的 HTML 可能携带不安全链接或事件处理器的问题。将来更新文档中的固定版本前，先核对上游发布说明。 [defuddle 0.19.6 发布说明](https://github.com/kepano/defuddle/releases/tag/0.19.6)
