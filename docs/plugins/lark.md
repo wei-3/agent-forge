@@ -8,7 +8,7 @@
 
 ```bash
 codex plugin add lark@agent-forge
-npm install -g @larksuite/cli@1.0.94
+npm install -g @larksuite/cli@1.0.99
 lark-cli --version
 ```
 
@@ -36,10 +36,11 @@ lark-cli auth status --verify
 ## 更新与注意事项
 
 ```bash
-npm install -g @larksuite/cli@1.0.94
+npm install -g @larksuite/cli@1.0.99
 ```
 
-插件源码不固定 SHA；重新安装时从上游默认分支取得最新提交。更新方式见 [README：更新已安装插件](../../README.md#更新已安装插件)。当前已核对 CLI 1.0.94 的发布说明；升级前先审核新版本的发布说明，再更新这里的精确版本。不要运行 `lark-cli update` 或
+插件源码不固定 SHA；重新安装时从上游默认分支取得最新提交。更新方式见 [README：更新已安装插件](../../README.md#更新已安装插件)。升级 CLI 前先核对[上游变更日志](https://github.com/larksuite/cli/blob/main/CHANGELOG.md)，再更新文档中的精确版本。不要运行 `lark-cli update` 或
 `npx skills add larksuite/cli -y -g`；它们会产生第二份 Skills。
 
-从 1.0.91 升级时注意：[上游发布说明](https://github.com/larksuite/cli/blob/main/CHANGELOG.md)中，1.0.93 移除了旧版 Sheets 命令接口；1.0.94 从日历事件输出中移除了 `app_link`，应使用分享链接。依赖这些命令或字段的脚本需要同步调整。
+- 从 1.0.97 或更早版本升级时，注意 `base +record-list` 和 `base +record-search` 从 1.0.98 起默认输出 NDJSON。依赖内联 JSON 的脚本应显式传入 `--format json`。
+- 从 1.0.91 升级时，注意 1.0.93 移除了旧版 Sheets 命令接口，1.0.94 从日历事件输出中移除了 `app_link`，应改用分享链接。
