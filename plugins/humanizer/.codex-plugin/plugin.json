@@ -1,7 +1,7 @@
 {
   "name": "humanizer",
-  "version": "3.1.0-agent-forge.1",
-  "description": "Codex compatibility packaging of Humanizer 3.1.0; rewrite AI-sounding prose while preserving meaning.",
+  "version": "4.0.0-agent-forge.1",
+  "description": "Codex compatibility packaging of Humanizer 4.0.0. Rewrite AI-sounding prose while preserving meaning.",
   "author": {
     "name": "blader"
   },

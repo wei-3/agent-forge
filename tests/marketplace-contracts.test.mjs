@@ -757,6 +757,8 @@ test('humanizer uses a local Codex compatibility package and the upstream Claude
   assert.equal(upstream.repository, manifest.repository);
   assert.ok(manifest.version.startsWith(`${upstream.version}-agent-forge.`));
   const skill = readFileSync(join(root, 'skills/humanizer/SKILL.md'), 'utf8');
+  const { metadata } = parseSkillFrontmatter(skill, 'humanizer/humanizer');
+  assert.equal(JSON.parse(metadata).version, upstream.version, 'Humanizer skill version must match upstream.json');
   const body = skill.replace(/^---\n[\s\S]*?\n---\n/u, '');
   assert.equal(createHash('sha256').update(body).digest('hex'), upstream.bodySha256);
   for (const [path, hash] of Object.entries(upstream.files)) {

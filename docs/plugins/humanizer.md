@@ -30,8 +30,8 @@ Claude Code：
 
 Codex CLI 0.153.4 实测忽略上游 manifest 中的 `skills: ["./"]`：能安装却没有技能。本地包将技能放入 `skills/humanizer/SKILL.md`，以原生 Codex manifest 声明技能目录和网站。
 
-- 上游版本：`3.1.0`；兼容包版本：`3.1.0-agent-forge.1`。
-- 上游提交：[225a6f39ac85f76ee48dbad772ea4abe4ed6c9d8](https://github.com/blader/humanizer/commit/225a6f39ac85f76ee48dbad772ea4abe4ed6c9d8)。
+- 上游版本为 `4.0.0`，兼容包版本为 `4.0.0-agent-forge.1`。 [上游发布说明](https://github.com/blader/humanizer/releases/tag/v4.0.0)
+- 上游提交为 [`b48c832f0f809c1b5658edbb838c2521b72f2413`](https://github.com/blader/humanizer/commit/b48c832f0f809c1b5658edbb838c2521b72f2413)。
 - 规则正文保持上游原样。为通过本仓库的平面元数据校验，frontmatter 中的多行 description 改用带转义的字符串，metadata 改用行内映射，内容含义不变。
 - `agents/openai.yaml` 与 MIT `LICENSE` 原样保留；许可证版权归 Siqi Chen。
 - [upstream.json](../../plugins/humanizer/upstream.json) 记录上游来源、版本、提交、正文及附件 SHA-256，测试防止意外修改。
@@ -41,6 +41,8 @@ Codex CLI 0.153.4 实测忽略上游 manifest 中的 `skills: ["./"]`：能安�
 ## 更新与手动同步
 
 Codex 用户按 [README：更新已安装插件](../../README.md#更新已安装插件) 刷新市场并重新安装，取得本市场已同步的兼容包。
+
+4.0.0 要求保留原文已有的事实，同时允许在表述笼统处补充已知属实的具体细节。
 
 维护者同步时：
 
