@@ -38,6 +38,14 @@ const LOCAL_MANIFEST_FIELDS = new Set([
   'keywords',
 ]);
 const THIRD_PARTY_PLUGINS = {
+  'taste-skill': {
+    source: {
+      source: 'url',
+      url: 'https://github.com/Leonxlnx/taste-skill.git',
+    },
+    authentication: 'ON_INSTALL',
+    category: 'Design',
+  },
   'agent-browser': {
     source: {
       source: 'url',
@@ -690,6 +698,23 @@ test('local plugin skills satisfy the repository metadata contract', () => {
 });
 
 const CLAUDE_MARKETPLACE_PATH = join(REPO_ROOT, '.claude-plugin/marketplace.json');
+
+test('taste-skill uses the upstream Codex manifest and explicit Claude skills', () => {
+  const codex = readJson(MARKETPLACE_PATH).plugins.find(({ name }) => name === 'taste-skill');
+  const claude = readJson(CLAUDE_MARKETPLACE_PATH).plugins.find(({ name }) => name === 'taste-skill');
+  assert.ok(codex, 'taste-skill is missing from the Codex marketplace');
+  assert.ok(claude, 'taste-skill is missing from the Claude marketplace');
+  assert.deepEqual(codex.source, THIRD_PARTY_PLUGINS['taste-skill'].source);
+  assert.equal(codex.skills, undefined, 'Codex must inherit the upstream manifest skills');
+  assert.deepEqual(claude.source, { source: 'github', repo: 'Leonxlnx/taste-skill' });
+  assert.equal(claude.strict, false);
+  assert.deepEqual(claude.skills, ['./skills/taste-skill']);
+  for (const plugin of [codex, claude]) {
+    assert.equal(plugin.repository, 'https://github.com/Leonxlnx/taste-skill');
+    assert.equal(plugin.license, 'MIT');
+    assert.equal(plugin.category, 'Design');
+  }
+});
 
 test('agent-browser loads upstream skills on both hosts without bundling the CLI', () => {
   const codex = readJson(MARKETPLACE_PATH).plugins.find(({ name }) => name === 'agent-browser');

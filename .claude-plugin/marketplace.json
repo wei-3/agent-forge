@@ -10,6 +10,18 @@
   },
   "plugins": [
     {
+      "name": "taste-skill",
+      "description": "Art direction and browser-based visual checks for websites, dashboards, and app screens; requires Node.js 22+ and Chrome, Edge, or Chromium.",
+      "source": { "source": "github", "repo": "Leonxlnx/taste-skill" },
+      "strict": false,
+      "skills": ["./skills/taste-skill"],
+      "author": { "name": "Leonxlnx" },
+      "repository": "https://github.com/Leonxlnx/taste-skill",
+      "homepage": "https://github.com/Leonxlnx/taste-skill",
+      "license": "MIT",
+      "category": "Design"
+    },
+    {
       "name": "agent-browser",
       "description": "Browser automation for web testing, form filling, screenshots, and data extraction; requires the separately installed agent-browser CLI.",
       "source": { "source": "github", "repo": "vercel-labs/agent-browser" },
