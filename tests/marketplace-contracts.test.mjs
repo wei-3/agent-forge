@@ -779,8 +779,8 @@ test('Postman uses skills-only direct MCP on Codex and native configuration on C
     './api-simulation',
     './api-testing',
     './application-testing',
-    './bootstrap',
     './ci-integration',
+    './cli-install',
     './collection-schema-v3',
     './datasets',
     './flows',
@@ -788,6 +788,7 @@ test('Postman uses skills-only direct MCP on Codex and native configuration on C
     './postman-mcp-server',
     './variables',
     './webhook-testing',
+    './workspaces',
   ]);
   assert.equal(codex.apps, undefined);
   assert.deepEqual(codex.mcpServers, {
