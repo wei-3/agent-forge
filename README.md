@@ -27,6 +27,7 @@ codex plugin add humanizer@agent-forge
 
 | 插件 | 何时用 |
 | --- | --- |
+| [`taste-skill`](docs/plugins/taste-skill.md) | 设计或改版网站、落地页、仪表盘，并通过浏览器检查视觉效果时 |
 | [`agent-browser`](docs/plugins/agent-browser.md) | 自动化操作网页、测试 Web 应用、填写表单、截图或抽取数据时 |
 | [`mattpocock-skills`](docs/plugins/mattpocock-skills.md) | 按规划、TDD、调试、领域建模和代码评审流程推进开发时 |
 | [`obsidian`](docs/plugins/obsidian.md) | 编辑 Obsidian Markdown、Bases、Canvas，或抽取网页正文时 |
