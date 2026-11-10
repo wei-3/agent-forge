@@ -213,15 +213,16 @@
         "./api-simulation",
         "./api-testing",
         "./application-testing",
-        "./bootstrap",
         "./ci-integration",
+        "./cli-install",
         "./collection-schema-v3",
         "./datasets",
         "./flows",
         "./performance-testing",
         "./postman-mcp-server",
         "./variables",
-        "./webhook-testing"
+        "./webhook-testing",
+        "./workspaces"
       ],
       "mcpServers": {
         "postman": {
